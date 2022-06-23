@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MailerController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,6 +24,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         'path'=>'/register',
         'normalization_context' => ['groups' => ['user:read:simple']]
     ],
+    "mail" => [
+        "method"=>"get",
+        'path'=>'/email',
+        'controller'=> MailerController::class
+    ]
 ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
