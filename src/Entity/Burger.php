@@ -10,12 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BurgerRepository::class)]
 #[ApiResource]
-class Burger
+class Burger extends Produit
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    
 
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'Burgers')]
     private $menus;
@@ -24,14 +21,13 @@ class Burger
     #[ORM\JoinColumn(nullable: false)]
     private $catalogue;
 
+    #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'burgers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $gestionnaire;
+
     public function __construct()
     {
         $this->menus = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -69,6 +65,18 @@ class Burger
     public function setCatalogue(?Catalogue $catalogue): self
     {
         $this->catalogue = $catalogue;
+
+        return $this;
+    }
+
+    public function getGestionnaire(): ?Gestionnaire
+    {
+        return $this->gestionnaire;
+    }
+
+    public function setGestionnaire(?Gestionnaire $gestionnaire): self
+    {
+        $this->gestionnaire = $gestionnaire;
 
         return $this;
     }

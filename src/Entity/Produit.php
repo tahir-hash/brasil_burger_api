@@ -18,22 +18,22 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $nom;
+    protected $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $image;
+    protected $image;
 
     #[ORM\Column(type: 'integer')]
-    private $prix;
+    protected $prix;
 
     #[ORM\Column(type: 'text')]
-    private $description;
+    protected $description;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $etat;
+    protected $etat='DISPONIBLE';
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: ProduitCommande::class)]
     private $produitCommandes;

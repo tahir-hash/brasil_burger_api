@@ -16,22 +16,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    protected $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $login;
+    protected $login;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    protected $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    protected $password;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $nom;
+    #[ORM\Column(type: 'string', length: 255,nullable: true)]
+    protected $nom;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $prenom;
+    #[ORM\Column(type: 'string', length: 255,nullable: true)]
+    protected $prenom;
 
     public function getId(): ?int
     {
@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_VISITEURS';
 
         return array_unique($roles);
     }

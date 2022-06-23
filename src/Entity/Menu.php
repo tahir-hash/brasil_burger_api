@@ -10,12 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ApiResource]
-class Menu
+class Menu extends Produit
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
 
     #[ORM\ManyToMany(targetEntity: Complement::class, mappedBy: 'menus')]
     private $complements;
@@ -33,10 +29,7 @@ class Menu
         $this->Burgers = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+
 
     /**
      * @return Collection<int, Complement>

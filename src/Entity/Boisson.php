@@ -10,13 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BoissonRepository::class)]
 #[ApiResource]
-class Boisson
+class Boisson extends Produit
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
-
     #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'boissons')]
     private $tailles;
 
@@ -25,10 +20,6 @@ class Boisson
         $this->tailles = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @return Collection<int, Taille>
