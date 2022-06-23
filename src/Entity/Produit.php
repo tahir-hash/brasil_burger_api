@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[UniqueEntity(fields:'nom',message: 'le nom doit etre unique!')]
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
 #[ORM\DiscriminatorMap(["produit" => "Produit", "burger" => "Burger","menu" => "Menu","boisson" => "Boisson","portion" => "PortionFrite"])]
@@ -18,18 +22,28 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["burger:read:simple","burger:read:all"])]
+    
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Assert\NotBlank(message: 'L\'image ne doit pas etre vide')]
     protected $image;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
     protected $prix;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(["burger:read:all","write"])]
+    #[Assert\NotBlank(message: 'La description ne doit pas etre vide')]
     protected $description;
 
     #[ORM\Column(type: 'string', length: 255)]

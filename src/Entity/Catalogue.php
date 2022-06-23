@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CatalogueRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CatalogueRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CatalogueRepository::class)]
 #[ApiResource]
@@ -21,6 +22,7 @@ class Catalogue
     private $menus;
 
     #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: Burger::class)]
+    #[ApiSubresource]
     private $burgers;
 
     public function __construct()

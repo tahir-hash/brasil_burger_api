@@ -2,23 +2,38 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields:'login',message: 'le login doit etre unique!')]
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
 #[ORM\DiscriminatorMap(["user" => "User", "gestionnaire" => "Gestionnaire","client" => "Client","livreur" => "Livreur"])]
+#[ApiResource(collectionOperations:[
+    "get",
+    "post_register" => [
+        "method"=>"post",
+        'path'=>'/register',
+        'normalization_context' => ['groups' => ['user:read:simple']]
+    ],
+])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["burger:read:all","write","user:read:simple"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(["burger:read:all","user:read:simple"])]
     protected $login;
 
     #[ORM\Column(type: 'json')]
@@ -27,10 +42,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     protected $password;
 
-    #[ORM\Column(type: 'string', length: 255,nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger:read:all","user:read:simple"])]
     protected $nom;
 
-    #[ORM\Column(type: 'string', length: 255,nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger:read:all","user:read:simple"])]
     protected $prenom;
 
     public function getId(): ?int

@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\GestionnaireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\ErrorHandler\Collecting;
+use App\Repository\GestionnaireRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\Response;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\GraphQl\Resolver\Factory\CollectionResolverFactory;
 
 #[ORM\Entity(repositoryClass: GestionnaireRepository::class)]
 #[ApiResource]
@@ -17,6 +21,7 @@ class Gestionnaire extends User
     private $commandes;
 
     #[ORM\OneToMany(mappedBy: 'gestionnaire', targetEntity: Burger::class)]
+    #[ApiSubresource]
     private $burgers;
 
     public function __construct()
