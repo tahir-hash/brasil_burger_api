@@ -198,5 +198,8 @@
         "files": [
             "config/packages/validator.yaml"
         ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.10.0"
     }
 }

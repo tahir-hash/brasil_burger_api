@@ -45,13 +45,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $prenom;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $token;
+    protected $token;
 
     #[ORM\Column(type: 'boolean')]
-    private $isEnabled=false;
+    protected $isEnabled=false;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $expireAt;
+    protected $expireAt;
 
     public function getId(): ?int
     {

@@ -6,23 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ApiResource(collectionOperations:[
-    "get",
+    "get"=>[
+        'method' => 'get',
+        'path'=>'/confirmer-mon-compte/{token}',
+        'controller'=> MailerController::class,
+        ],
     "post_register" => [
         "method"=>"post",
         'path'=>'/register',
-        'normalization_context' => ['groups' => ['user:read:simple']]
-    ],
-    "mail" => [
-        "method"=>"get",
-        'path'=>'/email',
-        'controller'=> MailerController::class
+        'normalization_context' => ['groups' => ['user:read:simple']],
     ]
-])]
+    ])]
 class Client extends User
 {
     #[ORM\Column(type: 'string', length: 255)]

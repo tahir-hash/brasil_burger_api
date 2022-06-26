@@ -1,7 +1,5 @@
-{% extends 'base.html.twig' %}
+Veuillez activer votre compte en cliquant sur ce lien!!!!
 
-{% block title %}Hello MailerController!{% endblock %}
+<br>
 
-{% block body %}
-Mail envoyer avec succes
-{% endblock %}
+<a href="{{ url('confirm_account', {"token": token}) }}">Cliquer ici pour confirmer votre compte</a>
