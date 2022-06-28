@@ -30,10 +30,6 @@ class Produit
     #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:simple","burger:read:all","write"])]
-    #[Assert\NotBlank(message: 'L\'image ne doit pas etre vide')]
-    protected $image;
 
     #[ORM\Column(type: 'integer')]
     #[Groups(["burger:read:simple","burger:read:all","write"])]
@@ -50,6 +46,11 @@ class Produit
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: ProduitCommande::class)]
     private $produitCommandes;
+
+    #[ORM\Column(type: 'blob')]
+    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Assert\NotBlank(message: 'L\'image ne doit pas etre vide')]
+    protected $image;
 
     public function __construct()
     {
@@ -73,17 +74,7 @@ class Produit
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
+   
 
     public function getPrix(): ?int
     {
@@ -147,6 +138,18 @@ class Produit
                 $produitCommande->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

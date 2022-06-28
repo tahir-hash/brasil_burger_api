@@ -26,6 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'method' => 'put',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
         "security_message"=>"Vous n'avez pas access à cette Ressource",
+        'denormalization_context' => ['groups' => ['write']],
         ],"get"=>[
         'method' => 'get',
         'status' => Response::HTTP_OK,
@@ -60,40 +61,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     public function __construct()
     {
-        $this->complements = new ArrayCollection();
         $this->Burgers = new ArrayCollection();
         $this->portionFrites = new ArrayCollection();
         $this->tailles = new ArrayCollection();
     }
 
-
-
-    /**
-     * @return Collection<int, Complement>
-     */
-    public function getComplements(): Collection
-    {
-        return $this->complements;
-    }
-
-    public function addComplement(Complement $complement): self
-    {
-        if (!$this->complements->contains($complement)) {
-            $this->complements[] = $complement;
-            $complement->addMenu($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComplement(Complement $complement): self
-    {
-        if ($this->complements->removeElement($complement)) {
-            $complement->removeMenu($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Burger>
