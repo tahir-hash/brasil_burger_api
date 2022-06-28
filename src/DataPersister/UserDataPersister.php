@@ -38,13 +38,14 @@ class UserDataPersister implements DataPersisterInterface
     {
         $hashedPassword = $this->passwordHasher->hashPassword(
             $data,
-            $data->getPassword()
+            $data->getPlainPassword()
         );
         $data->setPassword($hashedPassword);
-        $data->setToken($this->generateToken());
-        $data->setRoles(["ROLE_CLIENT"]);
         $data->setExpireAt(new \DateTime('+1 minutes'));
+        $data->setRoles(["ROLE_CLIENT"]);
+        $data->setToken($this->generateToken());
         $this->entityManager->persist($data);
+       // dd($data->getToken());
         $this->entityManager->flush();
         $this->mailer->sendEmail($data->getLogin(), $data->getToken());
     }
@@ -59,5 +60,4 @@ class UserDataPersister implements DataPersisterInterface
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 
-    
 }

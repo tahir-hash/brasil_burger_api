@@ -39,7 +39,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Boisson extends Produit
 {
     #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'boissons',cascade:['persist'])]
-    #[Groups(["write","burger:read:simple"])]
+    #[Groups(["write","burger:read:all"])]
     private $tailles;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'boissons')]

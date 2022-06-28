@@ -2,12 +2,13 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\Boisson;
-use App\Entity\Burger;
 use App\Entity\Menu;
-use App\Entity\PortionFrite;
+use App\Entity\Burger;
+use App\Entity\Boisson;
 use Doctrine\ORM\Events;
+use App\Entity\PortionFrite;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -19,10 +20,15 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $this->token = $tokenStorage->getToken();
     }
+    /* public function onCheckPassport(CheckPassportEvent $event)
+    {
+        dd($event);
+    } */
     public static function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,
+            //CheckPassportEvent::class => ['onCheckPassport', -10],
         ];
     }
     private function getUser()
@@ -65,4 +71,5 @@ class UserSubscriber implements EventSubscriberInterface
            
         }
     }
+
 }

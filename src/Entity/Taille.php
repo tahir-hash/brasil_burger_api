@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\TailleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TailleRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TailleRepository::class)]
 #[ApiResource]
@@ -15,12 +16,15 @@ class Taille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["burger:read:all","write"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["burger:read:all"])]
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["burger:read:all"])]
     private $libelle;
 
     #[ORM\ManyToMany(targetEntity: Boisson::class, mappedBy: 'tailles')]

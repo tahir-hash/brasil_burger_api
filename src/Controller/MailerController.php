@@ -19,25 +19,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class MailerController extends AbstractController
 {
     #[Route("/confirmer-mon-compte/{token}", name : "confirm_account")]
-    public function __invoke(
-        string $token,
-        ClientRepository $repo,
-        EntityManagerInterface $entityManager
-    ) {        
-        $client = $repo->findOneBy(["token" => $token]);
-        if ($client && $client->getExpireAt() > new \DateTime()) {
-            $client->setToken(null);
-            $client->setIsEnabled(true);
-            $client->setExpireAt(null);
-            $entityManager->persist($client);
+    public function __invoke(Request $request, ClientRepository $repo, EntityManagerInterface $entityManager)
+   {
+        $token= $request->get('token');
+        $user = $repo->findOneBy(["token" => $token]);
+        if ($user && $user->getExpireAt() > new \DateTime() && $user->isIsEnabled()==false) {
+            $user->setToken(null);
+            $user->setIsEnabled(true);
+           // $entityManager->persist($user);
             $entityManager->flush();
-            return $this->render('mailer/succes.html.twig');
-        } else {
-            $obj=["status" => 400,"message" => "erreur"];
-            return $this->json(json_encode($obj),400);
+            //return $this->render('mailer/succes.html.twig');
+            return $this->json(["succes"=>"diadieuf","status"=>200],200);
         }
-    }
-    
+        return $this->json(["error"=>"dialoul","status"=>400],Response::HTTP_BAD_REQUEST);
 
-    
+   }
 }

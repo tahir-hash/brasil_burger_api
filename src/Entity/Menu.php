@@ -55,7 +55,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     private $portionFrites;
 
     #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'menus')]
-    #[Groups(["write","burger:read:simple"])]
+    #[Groups(["write","burger:read:all"])]
     private $tailles;
 
     public function __construct()

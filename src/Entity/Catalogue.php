@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CatalogueRepository::class)]
 #[ApiResource]
@@ -16,6 +17,7 @@ class Catalogue
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["write"])]
     private $id;
 
     #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: Menu::class)]

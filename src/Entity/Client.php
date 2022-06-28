@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\MailerController;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -21,6 +22,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "method"=>"post",
         'path'=>'/register',
         'normalization_context' => ['groups' => ['user:read:simple']],
+    ],"mailActived"=>[
+        "method"=>"get",
+        "path"=>"/confirmer-mon-compte/{token}",
+        "controller"=> MailerController::class,
+       // "deserialize"=>false
     ]
     ])]
 class Client extends User

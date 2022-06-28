@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\MailerController;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -52,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     protected $expireAt;
+
+    #[SerializedName('password')]
+    protected $plainPassword;
 
     public function getId(): ?int
     {
@@ -181,5 +185,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->expireAt = $expireAt;
 
         return $this;
+    }
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    protected function generateToken()
+    {
+        $this->token= rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 }
