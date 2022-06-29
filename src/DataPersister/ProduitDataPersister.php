@@ -2,21 +2,18 @@
 
 namespace App\DataPersister;
 
-use Doctrine\ORM\EntityManagerInterface;
-use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\Produit;
-use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 
 class ProduitDataPersister implements DataPersisterInterface
 {
     private EntityManagerInterface $entityManager;
-    private FileUploader $fileUploader;
     public function __construct(
         EntityManagerInterface $entityManager,
-        FileUploader $fileUploader
     ) {
         $this->entityManager = $entityManager;
-        $this->fileUploader = $fileUploader;
     }
     public function supports($data): bool
     {
@@ -27,9 +24,9 @@ class ProduitDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
+        $file = $data->getImage();
         dd($data);
-        $brochureFileName = $this->fileUploader->upload($data->getImage());
-        $data->setImage($brochureFileName);
+        $data->setImage($file);
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
