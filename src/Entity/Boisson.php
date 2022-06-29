@@ -26,6 +26,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'method' => 'put',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
         "security_message"=>"Vous n'avez pas access à cette Ressource",
+        'denormalization_context' => ['groups' => ['write']],
+        'normalization_context' => ['groups' => ['burger:read:all']],
         ],"get"=>[
         'method' => 'get',
         'status' => Response::HTTP_OK,

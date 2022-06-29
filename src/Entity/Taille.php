@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TailleRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -28,10 +29,9 @@ class Taille
     private $libelle;
 
     #[ORM\ManyToMany(targetEntity: Boisson::class, mappedBy: 'tailles')]
+    //#[ApiSubresource()]
     private $boissons;
 
-    #[ORM\ManyToOne(targetEntity: Complement::class, inversedBy: 'tailles')]
-    #[ORM\JoinColumn(nullable: false)]
     private $complement;
 
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'tailles')]

@@ -44,9 +44,7 @@ class Burger extends Produit
     #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'Burgers')]
     private $menus;
 
-    #[ORM\ManyToOne(targetEntity: Catalogue::class, inversedBy: 'burgers')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["burger:read:all","write"])]
+    #[Groups(["burger:read:simple","write"])]
     private $catalogue;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'burgers')]

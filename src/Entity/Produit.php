@@ -22,17 +22,17 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:simple","burger:read:all","write"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
     protected $prix;
 
@@ -142,9 +142,11 @@ class Produit
         return $this;
     }
 
-    public function getImage()
+    public function getImage(): ?string
     {
-        return $this->image;
+       // return $this->image;
+       return stream_get_contents($this->image);
+
     }
 
     public function setImage($image): self

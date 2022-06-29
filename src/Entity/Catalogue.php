@@ -11,20 +11,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CatalogueRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ["get"=>[
+        'method' => 'get',
+        'normalization_context' => ['groups'=>['catalogue']]
+    ]]
+)]
 class Catalogue
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write"])]
+    #[Groups(["write","burger:read:simple"])]
     private $id;
 
     #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: Menu::class)]
+    #[Groups(["catalogue"])]
     private $menus;
 
     #[ORM\OneToMany(mappedBy: 'catalogue', targetEntity: Burger::class)]
-    #[ApiSubresource]
+   // #[ApiSubresource]
+   #[Groups(["catalogue"])]
     private $burgers;
 
     public function __construct()

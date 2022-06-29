@@ -43,8 +43,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     #[Groups(["write","burger:read:all"])]
     private $Burgers;
 
-    #[ORM\ManyToOne(targetEntity: Catalogue::class, inversedBy: 'menus')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Groups(["write","burger:read:simple"])]
     private $catalogue;
 

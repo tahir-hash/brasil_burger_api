@@ -41,8 +41,6 @@ class PortionFrite extends Produit
 {
     
 
-    #[ORM\ManyToOne(targetEntity: Complement::class, inversedBy: 'portionFrites')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Groups(["write","burger:read:simple"])]
     private $complement;
 
