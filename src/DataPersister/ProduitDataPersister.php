@@ -10,6 +10,7 @@ use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 class ProduitDataPersister implements DataPersisterInterface
 {
     private EntityManagerInterface $entityManager;
+    private Request $request;
     public function __construct(
         EntityManagerInterface $entityManager,
     ) {
@@ -24,9 +25,11 @@ class ProduitDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-       /*  $file = $data->getImage();
-        dd($data);
-        $data->setImage($file); */
+       // dd($data);
+      /*   $tmp_img =base64_encode($data->getImage());
+         */
+        $strm = fopen($this->file->getRealPath(),'rb');
+        $data->setImage(stream_get_contents($strm));
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

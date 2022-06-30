@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\GraphQl\Resolver\Stage\DeserializeStage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,17 +23,17 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
     #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
+    #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
     #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
     protected $prix;
 
@@ -142,9 +143,9 @@ class Produit
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage()
     {
-       // return $this->image;
+        return $this->image;
        return stream_get_contents($this->image);
 
     }

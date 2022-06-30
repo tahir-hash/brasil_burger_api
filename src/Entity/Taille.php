@@ -21,7 +21,7 @@ class Taille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:all"])]
+    #[Groups(["burger:read:all","complement"])]
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -30,6 +30,7 @@ class Taille
 
     #[ORM\ManyToMany(targetEntity: Boisson::class, mappedBy: 'tailles')]
     //#[ApiSubresource()]
+    //#[Groups(["complement"])]
     private $boissons;
 
     private $complement;

@@ -21,6 +21,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
+       // 'deserialize' =>false,
+        "swagger_context" => [
+            "consumes" => [
+                "multipart/form-data"
+            ]         
+        ]                      
     ]],
     itemOperations: ["put"=> [
         'method' => 'put',

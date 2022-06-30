@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ComplementRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ComplementRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ComplementRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ["get"=>[
+        'method' => 'get',
+        'normalization_context' => ['groups'=>['complement']]
+    ]]
+)]
 class Complement
 {
     #[ORM\Id]
@@ -19,6 +25,7 @@ class Complement
 
 
     #[ORM\OneToMany(mappedBy: 'complement', targetEntity: PortionFrite::class)]
+    #[Groups(["complement"])]
     private $portionFrites;
 
     #[ORM\OneToMany(mappedBy: 'complement', targetEntity: Taille::class)]

@@ -5,17 +5,15 @@ namespace App\DataProviders;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\Complement;
-use App\Entity\PortionFrite;
-use App\Entity\Taille;
 use App\Repository\PortionFriteRepository;
-use App\Repository\TailleRepository;
+use App\Repository\BoissonRepository;
 
 class ComplementsDataProviders implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     private PortionFriteRepository $repo;
-    private TailleRepository $reposit;
+    private BoissonRepository $reposit;
 
-    public function __construct(PortionFriteRepository $repo, TailleRepository $reposit)
+    public function __construct(PortionFriteRepository $repo, BoissonRepository $reposit)
     {
         $this->repo = $repo;
         $this->reposit = $reposit;
@@ -27,19 +25,19 @@ class ComplementsDataProviders implements ContextAwareCollectionDataProviderInte
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $catalogue=[];
-        $burgers= $this->repo->findby(["etat"=>"DISPONIBLE"]);
-        $menus= $this->reposit->findby(["etat"=>"DISPONIBLE"]);
-        foreach ($burgers as  $burger)
+        $complements=[];
+        $frites= $this->repo->findby(["etat"=>"DISPONIBLE"]);
+        $boissons= $this->reposit->findby(["etat"=>"DISPONIBLE"]);
+        foreach ($frites as  $frite)
         {
-           $catalogue[]=$burger;
+           $complements[]=$frite;
         }
 
-        foreach ($menus as $menu) 
+        foreach ($boissons as $boisson) 
         {
-            $catalogue[]=$menu;
+            $complements[]=$boisson;
         }
 
-         return $catalogue;
+         return $complements;
     }
 }
