@@ -10,13 +10,12 @@ use App\Repository\BoissonRepository;
 
 class ComplementsDataProviders implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
-    private PortionFriteRepository $repo;
-    private BoissonRepository $reposit;
+    private $complements;
 
     public function __construct(PortionFriteRepository $repo, BoissonRepository $reposit)
     {
-        $this->repo = $repo;
-        $this->reposit = $reposit;
+        $this->complements= new Complement($repo,$reposit);
+        
     }
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
@@ -25,19 +24,9 @@ class ComplementsDataProviders implements ContextAwareCollectionDataProviderInte
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $complements=[];
-        $frites= $this->repo->findby(["etat"=>"DISPONIBLE"]);
-        $boissons= $this->reposit->findby(["etat"=>"DISPONIBLE"]);
-        foreach ($frites as  $frite)
-        {
-           $complements[]=$frite;
-        }
-
-        foreach ($boissons as $boisson) 
-        {
-            $complements[]=$boisson;
-        }
-
-         return $complements;
+        return [
+            $this->complements->getPortionFrites(),
+            $this->complements->getTailles()
+        ];
     }
 }

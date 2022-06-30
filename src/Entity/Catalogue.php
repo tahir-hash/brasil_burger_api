@@ -7,21 +7,22 @@ use App\Repository\CatalogueRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Repository\BurgerRepository;
+use App\Repository\MenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CatalogueRepository::class)]
+//#[ORM\Entity(repositoryClass: CatalogueRepository::class)]
 #[ApiResource(
     collectionOperations: ["get"=>[
         'method' => 'get',
         'normalization_context' => ['groups'=>['catalogue']]
-    ]]
+    ]],itemOperations: [
+        
+        ]
 )]
 class Catalogue
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
     #[Groups(["write","burger:read:simple"])]
     private $id;
 
@@ -34,10 +35,10 @@ class Catalogue
    #[Groups(["catalogue"])]
     private $burgers;
 
-    public function __construct()
+    public function __construct(BurgerRepository $repo, MenuRepository $reposit)
     {
-        $this->menus = new ArrayCollection();
-        $this->burgers = new ArrayCollection();
+        $this->burgers = ["burgers"=>$repo->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
+        $this->menus = ["menus"=>$reposit->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
     }
 
     public function getId(): ?int
@@ -45,63 +46,15 @@ class Catalogue
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Menu>
-     */
-    public function getMenus(): Collection
+
+    public function getMenus()
     {
         return $this->menus;
     }
 
-    public function addMenu(Menu $menu): self
-    {
-        if (!$this->menus->contains($menu)) {
-            $this->menus[] = $menu;
-            $menu->setCatalogue($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMenu(Menu $menu): self
-    {
-        if ($this->menus->removeElement($menu)) {
-            // set the owning side to null (unless already changed)
-            if ($menu->getCatalogue() === $this) {
-                $menu->setCatalogue(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Burger>
-     */
-    public function getBurgers(): Collection
+    public function getBurgers()
     {
         return $this->burgers;
     }
 
-    public function addBurger(Burger $burger): self
-    {
-        if (!$this->burgers->contains($burger)) {
-            $this->burgers[] = $burger;
-            $burger->setCatalogue($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBurger(Burger $burger): self
-    {
-        if ($this->burgers->removeElement($burger)) {
-            // set the owning side to null (unless already changed)
-            if ($burger->getCatalogue() === $this) {
-                $burger->setCatalogue(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -8,24 +8,22 @@ use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
+use App\Service\PasswordHasher;
 
 class UserDataPersister implements DataPersisterInterface
 {
-    private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
     private ServiceMailer $mailer;
-
+    private PasswordHasher $passwordHasher;
 
     public function __construct(
-        UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
-        ServiceMailer $mailer
+        ServiceMailer $mailer,
+        PasswordHasher $passwordHasher
     ) {
-        $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
         $this->mailer=$mailer;
+        $this->passwordHasher=$passwordHasher;
     }
     public function supports($data): bool
     {
@@ -36,16 +34,11 @@ class UserDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $data,
-            $data->getPlainPassword()
-        );
-        $data->setPassword($hashedPassword);
+        $this->passwordHasher->hasher($data);
         $data->setExpireAt(new \DateTime('+1 minutes'));
         $data->setRoles(["ROLE_CLIENT"]);
         $data->setToken($this->generateToken());
         $this->entityManager->persist($data);
-       // dd($data->getToken());
         $this->entityManager->flush();
         $this->mailer->sendEmail($data->getLogin(), $data->getToken());
     }

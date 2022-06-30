@@ -49,7 +49,7 @@ class Produit
     private $produitCommandes;
 
     #[ORM\Column(type: 'blob')]
-    #[Groups(["burger:read:simple","burger:read:all","write"])]
+  //  #[Groups(["burger:read:simple","burger:read:all","write"])]
     protected $image;
 
     public function __construct()

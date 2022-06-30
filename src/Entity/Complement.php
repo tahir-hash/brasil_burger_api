@@ -6,23 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ComplementRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\BoissonRepository;
+use App\Repository\PortionFriteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ComplementRepository::class)]
+//#[ORM\Entity(repositoryClass: ComplementRepository::class)]
 #[ApiResource(
     collectionOperations: ["get"=>[
         'method' => 'get',
         'normalization_context' => ['groups'=>['complement']]
-    ]]
+    ]],itemOperations: [
+        
+    ]
 )]
 class Complement
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
     private $id;
-
 
     #[ORM\OneToMany(mappedBy: 'complement', targetEntity: PortionFrite::class)]
     #[Groups(["complement"])]
@@ -31,11 +31,10 @@ class Complement
     #[ORM\OneToMany(mappedBy: 'complement', targetEntity: Taille::class)]
     private $tailles;
 
-    public function __construct()
+    public function __construct(PortionFriteRepository $repo, BoissonRepository $reposit)
     {
-        $this->menus = new ArrayCollection();
-        $this->portionFrites = new ArrayCollection();
-        $this->tailles = new ArrayCollection();
+        $this->portionFrites = ["frites"=>$repo->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
+        $this->tailles =["boissons"=>$reposit->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
     }
 
     public function getId(): ?int
@@ -43,87 +42,17 @@ class Complement
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Menu>
-     */
-    public function getMenus(): Collection
-    {
-        return $this->menus;
-    }
-
-    public function addMenu(Menu $menu): self
-    {
-        if (!$this->menus->contains($menu)) {
-            $this->menus[] = $menu;
-        }
-
-        return $this;
-    }
-
-    public function removeMenu(Menu $menu): self
-    {
-        $this->menus->removeElement($menu);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PortionFrite>
-     */
-    public function getPortionFrites(): Collection
+   
+    public function getPortionFrites()
     {
         return $this->portionFrites;
     }
 
-    public function addPortionFrite(PortionFrite $portionFrite): self
-    {
-        if (!$this->portionFrites->contains($portionFrite)) {
-            $this->portionFrites[] = $portionFrite;
-            $portionFrite->setComplement($this);
-        }
-
-        return $this;
-    }
-
-    public function removePortionFrite(PortionFrite $portionFrite): self
-    {
-        if ($this->portionFrites->removeElement($portionFrite)) {
-            // set the owning side to null (unless already changed)
-            if ($portionFrite->getComplement() === $this) {
-                $portionFrite->setComplement(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Taille>
-     */
-    public function getTailles(): Collection
+   
+    public function getTailles()
     {
         return $this->tailles;
     }
 
-    public function addTaille(Taille $taille): self
-    {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles[] = $taille;
-            $taille->setComplement($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTaille(Taille $taille): self
-    {
-        if ($this->tailles->removeElement($taille)) {
-            // set the owning side to null (unless already changed)
-            if ($taille->getComplement() === $this) {
-                $taille->setComplement(null);
-            }
-        }
-
-        return $this;
-    }
+    
 }

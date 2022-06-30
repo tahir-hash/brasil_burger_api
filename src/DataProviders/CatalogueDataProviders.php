@@ -10,13 +10,10 @@ use App\Repository\MenuRepository;
 
 class CatalogueDataProviders implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
-    private BurgerRepository $repo;
-    private MenuRepository $reposit;
-
+    private $catalogue;
     public function __construct(BurgerRepository $repo,MenuRepository $reposit)
     {
-        $this->repo = $repo;
-        $this->reposit = $reposit;
+        $this->catalogue= new Catalogue($repo,$reposit);
     }
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
@@ -25,19 +22,9 @@ class CatalogueDataProviders implements ContextAwareCollectionDataProviderInterf
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $catalogue=[];
-        $burgers= $this->repo->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"]);
-        $menus= $this->reposit->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"]);
-        foreach ($burgers as  $burger)
-        {
-           $catalogue[]=$burger;
-        }
-
-        foreach ($menus as $menu) 
-        {
-            $catalogue[]=$menu;
-        }
-
-        return $catalogue;
+        return [
+            $this->catalogue->getBurgers(),
+            $this->catalogue->getMenus()
+        ];
     }
 }
