@@ -25,11 +25,6 @@ class ProduitDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-       // dd($data);
-      /*   $tmp_img =base64_encode($data->getImage());
-         */
-        $strm = fopen($this->file->getRealPath(),'rb');
-        $data->setImage(stream_get_contents($strm));
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

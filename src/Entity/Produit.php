@@ -50,7 +50,6 @@ class Produit
 
     #[ORM\Column(type: 'blob')]
     #[Groups(["burger:read:simple","burger:read:all","write"])]
-    #[Assert\NotBlank(message: 'L\'image ne doit pas etre vide')]
     protected $image;
 
     public function __construct()
@@ -146,7 +145,7 @@ class Produit
     public function getImage()
     {
         return $this->image;
-       return stream_get_contents($this->image);
+      // return stream_get_contents($this->image);
 
     }
 
