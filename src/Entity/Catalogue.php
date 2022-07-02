@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CatalogueRepository;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\MenuRepository;
+use App\Repository\BurgerRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use App\Repository\BurgerRepository;
-use App\Repository\MenuRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 //#[ORM\Entity(repositoryClass: CatalogueRepository::class)]
@@ -21,6 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         
         ]
 )]
+//#[ApiFilter(SearchFilter::class, properties: ['id' => 'partial'])]
+
 class Catalogue
 {
     #[Groups(["write","burger:read:simple"])]

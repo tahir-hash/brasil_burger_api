@@ -6,6 +6,7 @@ use App\Entity\Menu;
 use App\Entity\User;
 use App\Entity\Burger;
 use App\Entity\Boisson;
+use App\Entity\Produit;
 use Doctrine\ORM\Events;
 use App\Entity\PortionFrite;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -22,6 +23,14 @@ class UserSubscriber implements EventSubscriberInterface
     {
         $this->token = $tokenStorage->getToken();
     }
+    
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            Events::prePersist,
+            CheckPassportEvent::class => 'onCheckPassport'
+        ];
+    }
     public function onCheckPassport(CheckPassportEvent $event)
     {
         $passport = $event->getPassport();
@@ -35,13 +44,7 @@ class UserSubscriber implements EventSubscriberInterface
             );
         }
     }
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            CheckPassportEvent::class => ['onCheckPassport', -10],
-        ];
-    }
+    
     private function getUser()
     {
         //dd($this->token);
@@ -56,18 +59,11 @@ class UserSubscriber implements EventSubscriberInterface
     }
     public function prePersist(LifecycleEventArgs $args)
     {
-        if ($args->getObject() instanceof Burger) {
+        if ($args->getObject() instanceof Produit) {
             $args->getObject()->setGestionnaire($this->getUser());
         }
-        if ($args->getObject() instanceof Boisson) {
-            $args->getObject()->setGestionnaire($this->getUser());
-        }
-        if ($args->getObject() instanceof PortionFrite) {
-            $args->getObject()->setGestionnaire($this->getUser());
-        }
-        if ($args->getObject() instanceof Menu) {
-            $args->getObject()->setGestionnaire($this->getUser());
-        }
+
     }
 
+    
 }

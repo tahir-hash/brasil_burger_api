@@ -34,7 +34,7 @@ class Produit
 
     #[ORM\Column(type: 'integer')]
     #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
-    #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
+   // #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
     protected $prix;
 
     #[ORM\Column(type: 'text')]
@@ -49,8 +49,10 @@ class Produit
     private $produitCommandes;
 
     #[ORM\Column(type: 'blob')]
-  //  #[Groups(["burger:read:simple","burger:read:all","write"])]
+  //  #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     protected $image;
+
+    protected $imageFile;
 
     public function __construct()
     {
@@ -144,14 +146,25 @@ class Produit
 
     public function getImage()
     {
-        return $this->image;
-      // return stream_get_contents($this->image);
+        return base64_encode($this->image);
 
     }
 
     public function setImage($image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
 
         return $this;
     }

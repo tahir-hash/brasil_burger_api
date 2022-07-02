@@ -21,9 +21,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
-        /* 'input_formats' => [
+        'input_formats' => [
             'multipart' => ['multipart/form-data'],
-        ] */          
+        ]          
     ]],
     itemOperations: ["put"=> [
         'method' => 'put',
@@ -52,7 +52,7 @@ class Burger extends Produit
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'burgers')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["burger:read:all","write"])]
+   // #[Groups(["write"])]
     private $gestionnaire;
 
     public function __construct()

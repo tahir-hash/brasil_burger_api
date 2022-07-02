@@ -23,11 +23,16 @@ services:
     App\EventSubscriber\UserSubscriber:
         tags:
             - { name: doctrine.event_listener, event: prePersist}
+
         
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Service\ServiceMailer: ~
     App\Service\MenuService: ~
     App\Service\PasswordHasher: ~
+    App\Service\UploadFile: ~
+
+
+    
 
     
