@@ -23,7 +23,7 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
+    #[Groups(["burger:read:simple","commande:write","burger:read:all","write","catalogue","complement"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -49,7 +49,7 @@ class Produit
     private $produitCommandes;
 
     #[ORM\Column(type: 'blob')]
-  //  #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
+   // #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     protected $image;
 
     protected $imageFile;
@@ -146,8 +146,7 @@ class Produit
 
     public function getImage()
     {
-        return base64_encode($this->image);
-
+        return "data:image/png;base64 ".base64_encode(stream_get_contents($this->image));
     }
 
     public function setImage($image): self

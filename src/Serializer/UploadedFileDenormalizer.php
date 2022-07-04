@@ -21,6 +21,7 @@ final class UploadedFileDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null): bool
     {
+        //dd($data["imageFile"] instanceof UploadedFile);
         return $data instanceof UploadedFile;
     }
 }

@@ -23,11 +23,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:all","write","user:read:simple"])]
+    #[Groups(["burger:read:all","write","user:read:simple","livreur:read"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(["burger:read:all","user:read:simple"])]
+    #[Groups(["burger:read:all","user:read:simple","livreur:read"])]
     protected $login;
 
     #[ORM\Column(type: 'json')]
@@ -37,11 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:all","user:read:simple"])]
+    #[Groups(["burger:read:all","user:read:simple","livreur:read"])]
     protected $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:all","user:read:simple"])]
+    #[Groups(["burger:read:all","user:read:simple","livreur:read"])]
     protected $prenom;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

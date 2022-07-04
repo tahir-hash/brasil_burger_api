@@ -8,6 +8,7 @@ use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use App\Entity\Client;
 use App\Service\PasswordHasher;
 
 class UserDataPersister implements DataPersisterInterface
@@ -35,12 +36,15 @@ class UserDataPersister implements DataPersisterInterface
     public function persist($data)
     {
         $this->passwordHasher->hasher($data);
-        $data->setExpireAt(new \DateTime('+1 minutes'));
-        $data->setRoles(["ROLE_CLIENT"]);
-        $data->setToken($this->generateToken());
+        if($data instanceof  Client)
+        {
+            $data->setRoles(["ROLE_CLIENT"]);
+            $data->setExpireAt(new \DateTime('+1 minutes'));
+            $data->setToken($this->generateToken());
+            $this->mailer->sendEmail($data->getLogin(), $data->getToken());
+        }
         $this->entityManager->persist($data);
         $this->entityManager->flush();
-        $this->mailer->sendEmail($data->getLogin(), $data->getToken());
     }
     public function remove($data)
     {

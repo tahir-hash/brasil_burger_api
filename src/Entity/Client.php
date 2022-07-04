@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "controller"=> MailerController::class,
        // "deserialize"=>false
     ]
-    ])]
+])]
 class Client extends User
 {
     #[ORM\Column(type: 'string', length: 255)]

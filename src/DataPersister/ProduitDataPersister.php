@@ -24,6 +24,7 @@ class ProduitDataPersister implements DataPersisterInterface
         $this->entityManager = $entityManager;
         $this->prix = $prix;
         $this->uploadFile = $uploadFile;
+        $this->requestStack = $requestStack;
     }
     public function supports($data): bool
     {
@@ -34,12 +35,16 @@ class ProduitDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        dd($data);
-        $blob=$this->uploadFile->encodeImage();
-        $data->setImage($blob);
-        
-        if($data instanceof Menu)
+        //dd($data);
+        $request = $this->requestStack->getCurrentRequest();
+        if (!empty($request->files->all())) 
         {
+            //dd('magui guiss');
+            $blob = $this->uploadFile->encodeImage();
+            $data->setImage($blob);
+        }
+            //dd($data);
+        if ($data instanceof Menu) {
             $this->prix->prixMenu($data);
         }
         $this->entityManager->persist($data);

@@ -6,6 +6,7 @@ use App\Entity\Menu;
 use App\Entity\User;
 use App\Entity\Burger;
 use App\Entity\Boisson;
+use App\Entity\Commande;
 use App\Entity\Produit;
 use Doctrine\ORM\Events;
 use App\Entity\PortionFrite;
@@ -28,10 +29,10 @@ class UserSubscriber implements EventSubscriberInterface
     {
         return [
             Events::prePersist,
-            CheckPassportEvent::class => 'onCheckPassport'
+            //CheckPassportEvent::class => 'onCheckPassport'
         ];
     }
-    public function onCheckPassport(CheckPassportEvent $event)
+   /*  public function onCheckPassport(CheckPassportEvent $event)
     {
         $passport = $event->getPassport();
         $user = $passport->getUser();
@@ -43,7 +44,7 @@ class UserSubscriber implements EventSubscriberInterface
                 'Please verify your account before logging in.'
             );
         }
-    }
+    } */
     
     private function getUser()
     {
@@ -61,6 +62,10 @@ class UserSubscriber implements EventSubscriberInterface
     {
         if ($args->getObject() instanceof Produit) {
             $args->getObject()->setGestionnaire($this->getUser());
+        }
+
+        if ($args->getObject() instanceof Commande) {
+            $args->getObject()->setClient($this->getUser());
         }
 
     }

@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProduitCommandeRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProduitCommandeRepository::class)]
 #[ApiResource]
@@ -16,10 +17,12 @@ class ProduitCommande
     private $id;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["commande:write"])]
     private $quantiteProduit;
 
     #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'produitCommandes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["commande:write"])]
     private $produit;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'produitCommandes')]

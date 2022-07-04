@@ -2,12 +2,31 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\QuartierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\QuartierRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: QuartierRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get"=>[
+            'normalization_context' => ['groups'=>['quartier:read']],
+        ],
+        "post"=>[
+            'denormalization_context' => ['groups' => ['quartier:write']],
+            'normalization_context' => ['groups' => ['quartier:read']],
+        ]
+        ], itemOperations:[
+            "put"=>[
+                'denormalization_context' => ['groups' => ['quartier:write']],
+            'normalization_context' => ['groups' => ['quartier:read']],
+            ],
+            "get" => [
+            "security" => "is_granted('Zone_read', object)",
+            ]
+        ]
+)]
 class Quartier
 {
     #[ORM\Id]
@@ -16,10 +35,12 @@ class Quartier
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["quartier:write","quartier:read"])]
     private $libelle;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["quartier:write"])]
     private $zone;
 
     public function getId(): ?int

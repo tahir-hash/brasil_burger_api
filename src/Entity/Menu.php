@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ApiResource(
@@ -21,6 +22,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
+        'input_formats' => [
+            'multipart' => ['multipart/form-data'],
+        ]
     ]],
     itemOperations: ["put"=> [
         'method' => 'put',
@@ -28,6 +32,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
+        'input_formats' => [
+            'multipart' => ['multipart/form-data'],
+        ]
         ],"get"=>[
         'method' => 'get',
         'status' => Response::HTTP_OK,
@@ -42,6 +49,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     #[ORM\ManyToMany(targetEntity: Burger::class, inversedBy: 'menus')]
     #[Groups(["write","burger:read:all"])]
+    #[Assert\NotNull(message: 'le libelle ne doit pas etre vide')]
     private $Burgers;
 
     #[Groups(["write","burger:read:simple"])]

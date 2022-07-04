@@ -2,25 +2,55 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\ZoneRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ZoneRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get"=>[
+            'normalization_context' => ['groups'=>['zone:read']],
+            "security" => "is_granted('Zone_all', _api_resource_class)",
+        ],
+        "post"=>[
+            'denormalization_context' => ['groups' => ['zone:write']],
+            'normalization_context' => ['groups' => ['zone:read']],
+            "security_post_denormalize" => "is_granted('Zone_read', object)",
+        ]
+        ], itemOperations:[
+            "put"=>[
+                'denormalization_context' => ['groups' => ['zone:write']],
+            'normalization_context' => ['groups' => ['zone:read']],
+            "security_post_denormalize" => "is_granted('Zone_read', object)",
+            ],
+            "get" => [
+            "security" => "is_granted('Zone_read', object)",
+            ]
+        ]
+)]
+#[UniqueEntity(fields:'libelle',message: 'le libelle doit etre unique!')]
 class Zone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["zone:read","quartier:write"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
+    #[Groups(["zone:read","zone:write"])]
     private $libelle;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["zone:read","zone:write"])]
+    #[Assert\NotBlank(message: 'le prix ne doit pas etre vide')]
     private $prix;
 
     #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Commande::class)]

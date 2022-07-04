@@ -2,32 +2,47 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CommandeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommandeRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "post" => [
+            "method" => "POST",
+            'denormalization_context'=>['groups' => ['commande:write']],
+            'normalization_context'=>['groups' => ['commande:read']]
+        ]
+    ]
+)]
 class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["commande:read"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["commande:read","commande:write"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(["commande:read","commande:write"])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["commande:write","commande:write"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $etat;
+    #[Groups(["commande:read","commande:write"])]
+    private $etat="EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
     private $livraison;
@@ -44,11 +59,13 @@ class Commande
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: ProduitCommande::class)]
+    #[Groups(["commande:write","commande:write"])]
     private $produitCommandes;
 
     public function __construct()
     {
         $this->produitCommandes = new ArrayCollection();
+        $this->dateCmd= new \DateTime();
     }
 
     public function getId(): ?int

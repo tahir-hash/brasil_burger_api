@@ -23,13 +23,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'normalization_context' => ['groups' => ['burger:read:all']],
         'input_formats' => [
             'multipart' => ['multipart/form-data'],
-        ]          
+        ]        
     ]],
     itemOperations: ["put"=> [
         'method' => 'put',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
         "security_message"=>"Vous n'avez pas access à cette Ressource",
-        'denormalization_context' => ['groups' => ['write']]
+        'denormalization_context' => ['groups' => ['write']],
+        'input_formats' => [
+            'multipart' => ['multipart/form-data'],
+        ]
         ],"get"=>[
         'method' => 'get',
         'status' => Response::HTTP_OK,
@@ -68,24 +71,6 @@ class Burger extends Produit
         return $this->menus;
     }
 
-    public function addMenu(Menu $menu): self
-    {
-        if (!$this->menus->contains($menu)) {
-            $this->menus[] = $menu;
-            $menu->addBurger($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMenu(Menu $menu): self
-    {
-        if ($this->menus->removeElement($menu)) {
-            $menu->removeBurger($this);
-        }
-
-        return $this;
-    }
 
     public function getCatalogue(): ?Catalogue
     {
