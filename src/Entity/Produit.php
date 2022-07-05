@@ -48,7 +48,7 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: ProduitCommande::class)]
     private $produitCommandes;
 
-    #[ORM\Column(type: 'blob')]
+    #[ORM\Column(type: 'blob',nullable: true)]
    // #[Groups(["burger:read:simple","burger:read:all","write","catalogue"])]
     protected $image;
 

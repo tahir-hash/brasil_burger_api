@@ -42,40 +42,19 @@ class Boisson extends Produit
 {
     #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'boissons',cascade:['persist'])]
     #[Groups(["write","burger:read:all"])]
-    private $tailles;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'boissons')]
     private $gestionnaire;
 
+    #[ORM\OneToMany(mappedBy: 'boisson', targetEntity: BoissonTaille::class)]
+    private $boissonTailles;
+
     public function __construct()
     {
-        $this->tailles = new ArrayCollection();
+        $this->boissonTailles = new ArrayCollection();
     }
 
 
-    /**
-     * @return Collection<int, Taille>
-     */
-    public function getTailles(): Collection
-    {
-        return $this->tailles;
-    }
-
-    public function addTaille(Taille $taille): self
-    {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles[] = $taille;
-        }
-
-        return $this;
-    }
-
-    public function removeTaille(Taille $taille): self
-    {
-        $this->tailles->removeElement($taille);
-
-        return $this;
-    }
 
     public function getGestionnaire(): ?Gestionnaire
     {
@@ -85,6 +64,36 @@ class Boisson extends Produit
     public function setGestionnaire(?Gestionnaire $gestionnaire): self
     {
         $this->gestionnaire = $gestionnaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BoissonTaille>
+     */
+    public function getBoissonTailles(): Collection
+    {
+        return $this->boissonTailles;
+    }
+
+    public function addBoissonTaille(BoissonTaille $boissonTaille): self
+    {
+        if (!$this->boissonTailles->contains($boissonTaille)) {
+            $this->boissonTailles[] = $boissonTaille;
+            $boissonTaille->setBoisson($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoissonTaille(BoissonTaille $boissonTaille): self
+    {
+        if ($this->boissonTailles->removeElement($boissonTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($boissonTaille->getBoisson() === $this) {
+                $boissonTaille->setBoisson(null);
+            }
+        }
 
         return $this;
     }

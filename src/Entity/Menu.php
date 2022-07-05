@@ -53,24 +53,24 @@ use Symfony\Component\Validator\Constraints as Assert;
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'menus')]
     private $gestionnaire;
 
-    #[ORM\ManyToMany(targetEntity: PortionFrite::class, inversedBy: 'menus')]
-    #[Groups(["write","burger:read:all"])]
-    private $portionFrites;
-
-    #[ORM\ManyToMany(targetEntity: Taille::class, inversedBy: 'menus')]
-    #[Groups(["write","burger:read:all"])]
-    private $tailles;
-
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class,cascade:['persist'])]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
     private $menuBurgers;
 
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class,cascade:['persist'])]
+    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    private $menuTailles;
+
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade:['persist'])]
+    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    private $menuPortionFrites;
+
 
     public function __construct()
     {
-        $this->portionFrites = new ArrayCollection();
-        $this->tailles = new ArrayCollection();
         $this->menuBurgers = new ArrayCollection();
+        $this->menuTailles = new ArrayCollection();
+        $this->menuPortionFrites = new ArrayCollection();
     }
 
 
@@ -100,54 +100,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     }
 
     /**
-     * @return Collection<int, PortionFrite>
-     */
-    public function getPortionFrites(): Collection
-    {
-        return $this->portionFrites;
-    }
-
-    public function addPortionFrite(PortionFrite $portionFrite): self
-    {
-        if (!$this->portionFrites->contains($portionFrite)) {
-            $this->portionFrites[] = $portionFrite;
-        }
-
-        return $this;
-    }
-
-    public function removePortionFrite(PortionFrite $portionFrite): self
-    {
-        $this->portionFrites->removeElement($portionFrite);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Taille>
-     */
-    public function getTailles(): Collection
-    {
-        return $this->tailles;
-    }
-
-    public function addTaille(Taille $taille): self
-    {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles[] = $taille;
-        }
-
-        return $this;
-    }
-
-    public function removeTaille(Taille $taille): self
-    {
-        $this->tailles->removeElement($taille);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, MenuBurger>
      */
     public function getMenuBurgers(): Collection
@@ -171,6 +123,65 @@ use Symfony\Component\Validator\Constraints as Assert;
             // set the owning side to null (unless already changed)
             if ($menuBurger->getMenu() === $this) {
                 $menuBurger->setMenu(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MenuTaille>
+     */
+    public function getMenuTailles(): Collection
+    {
+        return $this->menuTailles;
+    }
+
+    public function addMenuTaille(MenuTaille $menuTaille): self
+    {
+        if (!$this->menuTailles->contains($menuTaille)) {
+            $this->menuTailles[] = $menuTaille;
+            $menuTaille->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenuTaille(MenuTaille $menuTaille): self
+    {
+        if ($this->menuTailles->removeElement($menuTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($menuTaille->getMenu() === $this) {
+                $menuTaille->setMenu(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MenuPortionFrite>
+     */
+    public function getMenuPortionFrites(): Collection
+    {
+        return $this->menuPortionFrites;
+    }
+
+    public function addMenuPortionFrite(MenuPortionFrite $menuPortionFrite): self
+    {
+        if (!$this->menuPortionFrites->contains($menuPortionFrite)) {
+            $this->menuPortionFrites[] = $menuPortionFrite;
+            $menuPortionFrite->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenuPortionFrite(MenuPortionFrite $menuPortionFrite): self
+    {
+        if ($this->menuPortionFrites->removeElement($menuPortionFrite)) {
+            // set the owning side to null (unless already changed)
+            if ($menuPortionFrite->getMenu() === $this) {
+                $menuPortionFrite->setMenu(null);
             }
         }
 
