@@ -2,13 +2,13 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Zone;
+use App\Entity\Quartier;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ZoneVoter extends Voter
+class QuartierVoter extends Voter
 {
     private $security=null;
 
@@ -26,7 +26,7 @@ class ZoneVoter extends Voter
             $subject= new $subject();
         }
         $supportsAttribute = in_array($attribute, ["CREATE", "EDIT", "DELETE", "READ","ALL"]);
-        $supportsSubject = $subject instanceof Zone;
+        $supportsSubject = $subject instanceof Quartier;
         return $supportsAttribute && $supportsSubject;
     }
 
@@ -47,6 +47,12 @@ class ZoneVoter extends Voter
                 }
                 break;
             case "ALL":
+                if($this->security->isGranted('ROLE_GESTIONNAIRE'))
+                {
+                    return true;
+                }
+                break;
+            case "READ":
                 if($this->security->isGranted('ROLE_GESTIONNAIRE'))
                 {
                     return true;

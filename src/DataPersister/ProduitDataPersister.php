@@ -45,7 +45,8 @@ class ProduitDataPersister implements DataPersisterInterface
         }
             //dd($data);
         if ($data instanceof Menu) {
-            $this->prix->prixMenu($data);
+           // $this->prix->prixMenu($data);
+           //dd($data);
         }
         $this->entityManager->persist($data);
         $this->entityManager->flush();

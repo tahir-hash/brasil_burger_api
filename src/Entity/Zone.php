@@ -16,21 +16,21 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     collectionOperations: [
         "get"=>[
             'normalization_context' => ['groups'=>['zone:read']],
-            "security" => "is_granted('Zone_all', _api_resource_class)",
+            "security" => "is_granted('ALL', _api_resource_class)",
         ],
         "post"=>[
             'denormalization_context' => ['groups' => ['zone:write']],
             'normalization_context' => ['groups' => ['zone:read']],
-            "security_post_denormalize" => "is_granted('Zone_read', object)",
+            "security_post_denormalize" => "is_granted('READ', object)",
         ]
         ], itemOperations:[
             "put"=>[
                 'denormalization_context' => ['groups' => ['zone:write']],
             'normalization_context' => ['groups' => ['zone:read']],
-            "security_post_denormalize" => "is_granted('Zone_read', object)",
+            "security_post_denormalize" => "is_granted('READ', object)",
             ],
             "get" => [
-            "security" => "is_granted('Zone_read', object)",
+            "security" => "is_granted('READ', object)",
             ]
         ]
 )]

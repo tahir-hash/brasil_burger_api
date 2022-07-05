@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\QuartierRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: QuartierRepository::class)]
 #[ApiResource(
     collectionOperations: [
@@ -36,11 +37,13 @@ class Quartier
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(["quartier:write","quartier:read"])]
+    #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
     private $libelle;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(["quartier:write"])]
+    #[Assert\NotBlank(message: 'Le zone ne doit pas etre vide')]
     private $zone;
 
     public function getId(): ?int
