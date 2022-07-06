@@ -30,6 +30,7 @@ services:
     App\Service\MenuService: ~
     App\Service\PasswordHasher: ~
     App\Service\UploadFile: ~
+    App\Service\CommandePriceService: ~
 
 
     

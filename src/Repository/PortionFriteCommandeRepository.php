@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\ProduitCommande;
+use App\Entity\PortionFriteCommande;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ProduitCommande>
+ * @extends ServiceEntityRepository<PortionFriteCommande>
  *
- * @method ProduitCommande|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProduitCommande|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProduitCommande[]    findAll()
- * @method ProduitCommande[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PortionFriteCommande|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PortionFriteCommande|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PortionFriteCommande[]    findAll()
+ * @method PortionFriteCommande[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProduitCommandeRepository extends ServiceEntityRepository
+class PortionFriteCommandeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ProduitCommande::class);
+        parent::__construct($registry, PortionFriteCommande::class);
     }
 
-    public function add(ProduitCommande $entity, bool $flush = false): void
+    public function add(PortionFriteCommande $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class ProduitCommandeRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(ProduitCommande $entity, bool $flush = false): void
+    public function remove(PortionFriteCommande $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class ProduitCommandeRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return ProduitCommande[] Returns an array of ProduitCommande objects
+//     * @return PortionFriteCommande[] Returns an array of PortionFriteCommande objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class ProduitCommandeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?ProduitCommande
+//    public function findOneBySomeField($value): ?PortionFriteCommande
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')

@@ -35,7 +35,7 @@ class Produit
     #[ORM\Column(type: 'integer')]
     #[Groups(["burger:read:simple","burger:read:all","write","catalogue","complement"])]
    // #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
-    protected $prix;
+    protected $prix=0;
 
     #[ORM\Column(type: 'text')]
     #[Groups(["burger:read:all","write"])]
@@ -45,18 +45,18 @@ class Produit
     #[ORM\Column(type: 'string', length: 255)]
     protected $etat='DISPONIBLE';
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: ProduitCommande::class)]
-    private $produitCommandes;
 
     #[ORM\Column(type: 'blob',nullable: true)]
-   #[Groups(["write","burger:read:simple","burger:read:all","catalogue"])]
+   #[Groups(["burger:read:all","catalogue"])]
     protected $image;
 
     protected $imageFile;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    protected $type;
+
     public function __construct()
     {
-        $this->produitCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,39 +114,14 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, ProduitCommande>
-     */
-    public function getProduitCommandes(): Collection
-    {
-        return $this->produitCommandes;
-    }
-
-    public function addProduitCommande(ProduitCommande $produitCommande): self
-    {
-        if (!$this->produitCommandes->contains($produitCommande)) {
-            $this->produitCommandes[] = $produitCommande;
-            $produitCommande->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduitCommande(ProduitCommande $produitCommande): self
-    {
-        if ($this->produitCommandes->removeElement($produitCommande)) {
-            // set the owning side to null (unless already changed)
-            if ($produitCommande->getProduit() === $this) {
-                $produitCommande->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getImage()
     {
-        return base64_encode(stream_get_contents($this->image));
+        if($this->image!==null)
+        {
+            return base64_encode(stream_get_contents($this->image));
+        }
+        return null;
     }
 
     public function setImage($image): self
@@ -164,6 +139,18 @@ class Produit
     public function setImageFile($imageFile)
     {
         $this->imageFile = $imageFile;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

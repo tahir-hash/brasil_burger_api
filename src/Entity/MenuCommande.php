@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\MenuBurgerRepository;
+use App\Repository\MenuCommandeRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: MenuBurgerRepository::class)]
+#[ORM\Entity(repositoryClass: MenuCommandeRepository::class)]
 #[ApiResource]
-class MenuBurger
+class MenuCommande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,18 +17,17 @@ class MenuBurger
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
+    #[Groups(["commande:read","commande:write"])]
     private $quantite;
 
+    #[ORM\Column(type: 'integer')]
+    private $prix;
 
-    #[ORM\ManyToOne(targetEntity: Burger::class, inversedBy: 'menuBurgers')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\NotBlank(message: 'Choisir au moins un burger')]
-    private $burger;
-
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuBurgers')]
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuCommandes')]
     private $menu;
+
+    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'menuCommandes')]
+    private $commande;
 
     public function getId(): ?int
     {
@@ -48,15 +46,14 @@ class MenuBurger
         return $this;
     }
 
-
-    public function getBurger(): ?Burger
+    public function getPrix(): ?int
     {
-        return $this->burger;
+        return $this->prix;
     }
 
-    public function setBurger(?Burger $burger): self
+    public function setPrix(int $prix): self
     {
-        $this->burger = $burger;
+        $this->prix = $prix;
 
         return $this;
     }
@@ -69,6 +66,18 @@ class MenuBurger
     public function setMenu(?Menu $menu): self
     {
         $this->menu = $menu;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

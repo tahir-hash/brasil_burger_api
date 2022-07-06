@@ -40,7 +40,7 @@ class Zone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["zone:read","quartier:write"])]
+    #[Groups(["zone:read","quartier:write","commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]

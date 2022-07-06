@@ -21,6 +21,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
+        'input_formats' => [
+            'multipart' => ['multipart/form-data'],
+        ]
     ]],
     itemOperations: ["put"=> [
         'method' => 'put',
@@ -46,12 +49,14 @@ class Boisson extends Produit
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'boissons')]
     private $gestionnaire;
 
-    #[ORM\OneToMany(mappedBy: 'boisson', targetEntity: BoissonTaille::class)]
+    #[ORM\OneToMany(mappedBy: 'boisson', targetEntity: BoissonTaille::class,cascade:['persist'])]
+    #[Groups(["write","burger:read:all"])]
     private $boissonTailles;
 
     public function __construct()
     {
         $this->boissonTailles = new ArrayCollection();
+        $this->type = 'boisson';
     }
 
 

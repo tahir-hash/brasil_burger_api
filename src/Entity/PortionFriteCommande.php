@@ -4,14 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MenuPortionFriteRepository;
+use App\Repository\PortionFriteCommandeRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
-
-#[ORM\Entity(repositoryClass: MenuPortionFriteRepository::class)]
+#[ORM\Entity(repositoryClass: PortionFriteCommandeRepository::class)]
 #[ApiResource]
-class MenuPortionFrite
+class PortionFriteCommande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,17 +17,19 @@ class MenuPortionFrite
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
+    #[Groups(["commande:read","commande:write"])]
+
     private $quantite;
 
-    #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'menuPortionFrites')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\NotBlank(message: 'Choisir au moins une portionFrites')]
+    #[ORM\Column(type: 'integer')]
+    private $prix;
+
+    #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'portionFriteCommandes')]
+    #[Groups(["commande:read","commande:write"])]
     private $portionFrite;
 
-    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuPortionFrites')]
-    private $menu;
+    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'portionFriteCommandes')]
+    private $commande;
 
     public function getId(): ?int
     {
@@ -48,6 +48,18 @@ class MenuPortionFrite
         return $this;
     }
 
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
     public function getPortionFrite(): ?PortionFrite
     {
         return $this->portionFrite;
@@ -60,14 +72,14 @@ class MenuPortionFrite
         return $this;
     }
 
-    public function getMenu(): ?Menu
+    public function getCommande(): ?Commande
     {
-        return $this->menu;
+        return $this->commande;
     }
 
-    public function setMenu(?Menu $menu): self
+    public function setCommande(?Commande $commande): self
     {
-        $this->menu = $menu;
+        $this->commande = $commande;
 
         return $this;
     }

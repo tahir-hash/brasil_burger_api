@@ -56,16 +56,33 @@ class Commande
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes')]
+    #[Groups(["commande:read","commande:write"])]
     private $zone;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: ProduitCommande::class)]
-    #[Groups(["commande:write","commande:write"])]
-    private $produitCommandes;
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class,cascade:['persist'])]
+    #[Groups(["commande:read","commande:write"])]
+    private $burgerCommandes;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class,cascade:['persist'])]
+   // #[Groups(["commande:read","commande:write"])]
+    private $menuCommandes;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class,cascade:['persist'])]
+    #[Groups(["commande:read","commande:write"])]
+    private $portionFriteCommandes;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class,cascade:['persist'])]
+    #[Groups(["commande:read","commande:write"])]
+    private $boissonTailleCommandes;
+
 
     public function __construct()
     {
-        $this->produitCommandes = new ArrayCollection();
         $this->dateCmd= new \DateTime();
+        $this->burgerCommandes = new ArrayCollection();
+        $this->menuCommandes = new ArrayCollection();
+        $this->portionFriteCommandes = new ArrayCollection();
+        $this->boissonTailleCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,32 +187,124 @@ class Commande
     }
 
     /**
-     * @return Collection<int, ProduitCommande>
+     * @return Collection<int, BurgerCommande>
      */
-    public function getProduitCommandes(): Collection
+    public function getBurgerCommandes(): Collection
     {
-        return $this->produitCommandes;
+        return $this->burgerCommandes;
     }
 
-    public function addProduitCommande(ProduitCommande $produitCommande): self
+    public function addBurgerCommande(BurgerCommande $burgerCommande): self
     {
-        if (!$this->produitCommandes->contains($produitCommande)) {
-            $this->produitCommandes[] = $produitCommande;
-            $produitCommande->setCommande($this);
+        if (!$this->burgerCommandes->contains($burgerCommande)) {
+            $this->burgerCommandes[] = $burgerCommande;
+            $burgerCommande->setCommande($this);
         }
 
         return $this;
     }
 
-    public function removeProduitCommande(ProduitCommande $produitCommande): self
+    public function removeBurgerCommande(BurgerCommande $burgerCommande): self
     {
-        if ($this->produitCommandes->removeElement($produitCommande)) {
+        if ($this->burgerCommandes->removeElement($burgerCommande)) {
             // set the owning side to null (unless already changed)
-            if ($produitCommande->getCommande() === $this) {
-                $produitCommande->setCommande(null);
+            if ($burgerCommande->getCommande() === $this) {
+                $burgerCommande->setCommande(null);
             }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, MenuCommande>
+     */
+    public function getMenuCommandes(): Collection
+    {
+        return $this->menuCommandes;
+    }
+
+    public function addMenuCommande(MenuCommande $menuCommande): self
+    {
+        if (!$this->menuCommandes->contains($menuCommande)) {
+            $this->menuCommandes[] = $menuCommande;
+            $menuCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenuCommande(MenuCommande $menuCommande): self
+    {
+        if ($this->menuCommandes->removeElement($menuCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($menuCommande->getCommande() === $this) {
+                $menuCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PortionFriteCommande>
+     */
+    public function getPortionFriteCommandes(): Collection
+    {
+        return $this->portionFriteCommandes;
+    }
+
+    public function addPortionFriteCommande(PortionFriteCommande $portionFriteCommande): self
+    {
+        if (!$this->portionFriteCommandes->contains($portionFriteCommande)) {
+            $this->portionFriteCommandes[] = $portionFriteCommande;
+            $portionFriteCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removePortionFriteCommande(PortionFriteCommande $portionFriteCommande): self
+    {
+        if ($this->portionFriteCommandes->removeElement($portionFriteCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($portionFriteCommande->getCommande() === $this) {
+                $portionFriteCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BoissonTailleCommande>
+     */
+    public function getBoissonTailleCommandes(): Collection
+    {
+        return $this->boissonTailleCommandes;
+    }
+
+    public function addBoissonTailleCommande(BoissonTailleCommande $boissonTailleCommande): self
+    {
+        if (!$this->boissonTailleCommandes->contains($boissonTailleCommande)) {
+            $this->boissonTailleCommandes[] = $boissonTailleCommande;
+            $boissonTailleCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoissonTailleCommande(BoissonTailleCommande $boissonTailleCommande): self
+    {
+        if ($this->boissonTailleCommandes->removeElement($boissonTailleCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($boissonTailleCommande->getCommande() === $this) {
+                $boissonTailleCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }
