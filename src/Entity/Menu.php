@@ -44,7 +44,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
         "security_message"=>"Vous n'avez pas access à cette Ressource",
         ]]
-)]class Menu extends Produit
+)]
+
+class Menu extends Produit
 {
 
     #[Groups(["write","burger:read:simple"])]
@@ -55,14 +57,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class,cascade:['persist'])]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Assert\Count(min:1,minMessage: 'Le menu doit contenir au moins 1 burgers')]
+    #[Assert\Valid]   
     private $menuBurgers;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class,cascade:['persist'])]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Assert\Valid]   
     private $menuTailles;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade:['persist'])]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Assert\Valid]   
     private $menuPortionFrites;
 
 

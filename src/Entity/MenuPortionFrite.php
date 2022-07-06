@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\MenuPortionFriteRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: MenuPortionFriteRepository::class)]
 #[ApiResource]
@@ -18,6 +20,7 @@ class MenuPortionFrite
 
     #[ORM\Column(type: 'integer')]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'menuPortionFrites')]

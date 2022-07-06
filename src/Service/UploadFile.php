@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class UploadFile
 {
-
     private RequestStack $request;
     public function __construct(RequestStack $request)
     {
@@ -15,8 +14,8 @@ class UploadFile
 
     public function encodeImage()
     {
-        $test = $this->request->getCurrentRequest();
-        $file=$test->files->all()['imageFile'];
+        $request = $this->request->getCurrentRequest();
+        $file=$request->files->all()['imageFile'];
         return stream_get_contents(fopen($file->getRealPath(), 'rb'));
     }
 }

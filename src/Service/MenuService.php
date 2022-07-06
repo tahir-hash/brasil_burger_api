@@ -7,15 +7,19 @@ class MenuService
 
     public function prixMenu($data)
     {
+        $data->getMenuBurgers()[1]->getBurger()->getPrix();
         $total=0;
-            foreach ($data->getBurgers() as $burger) {
-                $total += $burger->getPrix();
+            foreach ($data->getMenuBurgers() as $burger) {
+                $prix=$burger->getBurger()->getPrix()*$burger->getQuantite();
+                $total+=$prix;
             }
-            foreach ($data->getPortionFrites() as $frites) {
-                $total += $frites->getPrix();
+            foreach ($data->getMenuPortionFrites() as $frites) {
+                $prix=$frites->getPortionFrite()->getPrix()*$frites->getQuantite();
+                $total+=$prix;
             }
-            foreach ($data->getTailles() as $tailles) {
-                $total += $tailles->getPrix();
+            foreach ($data->getMenuTailles() as $taille) {
+                $prix=$taille->getTaille()->getPrix()*$taille->getQuantite();
+                $total+=$prix;
             }
            // dd($total);
             $data->setPrix($total);  
