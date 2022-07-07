@@ -22,7 +22,7 @@ class MenuTaille
     private $quantite;
 
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Groups(["write","burger:read:all","burger:read:simple","commande:write",  "commande:read"])]
     #[Assert\NotBlank(message: 'Choisir au moins une Taille')]
     private $taille;
 

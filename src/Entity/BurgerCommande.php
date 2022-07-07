@@ -30,6 +30,10 @@ class BurgerCommande
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'burgerCommandes')]
     private $commande;
 
+    public function __construct()
+    {
+    }
+
     public function getId(): ?int
     {
         return $this->id;

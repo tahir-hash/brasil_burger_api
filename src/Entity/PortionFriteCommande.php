@@ -31,6 +31,10 @@ class PortionFriteCommande
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'portionFriteCommandes')]
     private $commande;
 
+    public function __construct()
+    {
+    }
+
     public function getId(): ?int
     {
         return $this->id;

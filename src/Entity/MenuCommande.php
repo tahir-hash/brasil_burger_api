@@ -17,7 +17,6 @@ class MenuCommande
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
     private $quantite;
 
     #[ORM\Column(type: 'integer')]
@@ -29,6 +28,9 @@ class MenuCommande
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'menuCommandes')]
     private $commande;
 
+    public function __construct()
+    {
+    }
     public function getId(): ?int
     {
         return $this->id;

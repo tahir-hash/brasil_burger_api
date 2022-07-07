@@ -7,7 +7,7 @@ class MenuService
 
     public function prixMenu($data)
     {
-        $data->getMenuBurgers()[1]->getBurger()->getPrix();
+       // $data->getMenuBurgers()[1]->getBurger()->getPrix();
         $total=0;
             foreach ($data->getMenuBurgers() as $burger) {
                 $prix=$burger->getBurger()->getPrix()*$burger->getQuantite();

@@ -12,47 +12,47 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BurgerRepository::class)]
 #[ApiResource(
-    collectionOperations: ["get"=>[
+    collectionOperations: ["get" => [
         'method' => 'get',
         'status' => Response::HTTP_OK,
-        'normalization_context' => ['groups'=>['burger:read:simple']]
-    ],"post"=>[
+        'normalization_context' => ['groups' => ['burger:read:simple']]
+    ], "post" => [
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
+        "security_message" => "Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
         'input_formats' => [
             'multipart' => ['multipart/form-data'],
-        ]        
+        ]
     ]],
-    itemOperations: ["put"=> [
+    itemOperations: ["put" => [
         'method' => 'put',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
+        "security_message" => "Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'input_formats' => [
             'multipart' => ['multipart/form-data'],
         ]
-        ],"get"=>[
+    ], "get" => [
         'method' => 'get',
         'status' => Response::HTTP_OK,
-        'normalization_context' => ['groups'=>['burger:read:all']]
-        ],"delete"=>[
-            'method' => 'delete',
+        'normalization_context' => ['groups' => ['burger:read:all']]
+    ], "delete" => [
+        'method' => 'delete',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
-        ]]
+        "security_message" => "Vous n'avez pas access à cette Ressource",
+    ]]
 )]
 class Burger extends Produit
 {
-    
 
-    #[Groups(["burger:read:simple","write"])]
+
+    #[Groups(["burger:read:simple", "write"])]
     private $catalogue;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'burgers')]
     #[ORM\JoinColumn(nullable: false)]
-   // #[Groups(["write"])]
+    // #[Groups(["write"])]
     private $gestionnaire;
 
     #[ORM\OneToMany(mappedBy: 'burger', targetEntity: MenuBurger::class)]

@@ -64,7 +64,6 @@ class Commande
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class,cascade:['persist'])]
-   // #[Groups(["commande:read","commande:write"])]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class,cascade:['persist'])]

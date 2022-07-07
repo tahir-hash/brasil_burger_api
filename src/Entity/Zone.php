@@ -45,7 +45,7 @@ class Zone
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
-    #[Groups(["zone:read","zone:write"])]
+    #[Groups(["zone:read","zone:write","commande:read"])]
     private $libelle;
 
     #[ORM\Column(type: 'integer')]

@@ -8,3 +8,5 @@ api_platform:
     collection:
         pagination:
             items_per_page: 3
+    #eager_loading:
+    #    max_joins: 10010

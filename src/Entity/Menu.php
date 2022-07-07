@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MenuRepository;
+use App\Service\ValidationService;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,62 +15,62 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ApiResource(
-    collectionOperations: ["get"=>[
+    collectionOperations: ["get" => [
         'method' => 'get',
         'status' => Response::HTTP_OK,
-        'normalization_context' => ['groups'=>['burger:read:simple']]
-    ],"post"=>[
+        'normalization_context' => ['groups' => ['burger:read:simple']]
+    ], "post" => [
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
+        "security_message" => "Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
         'input_formats' => [
             'multipart' => ['multipart/form-data'],
         ]
     ]],
-    itemOperations: ["put"=> [
+    itemOperations: ["put" => [
         'method' => 'put',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
+        "security_message" => "Vous n'avez pas access à cette Ressource",
         'denormalization_context' => ['groups' => ['write']],
         'normalization_context' => ['groups' => ['burger:read:all']],
         'input_formats' => [
             'multipart' => ['multipart/form-data'],
         ]
-        ],"get"=>[
+    ], "get" => [
         'method' => 'get',
         'status' => Response::HTTP_OK,
-        'normalization_context' => ['groups'=>['burger:read:all']]
-        ],"delete"=>[
-            'method' => 'delete',
+        'normalization_context' => ['groups' => ['burger:read:all']]
+    ], "delete" => [
+        'method' => 'delete',
         "security" => "is_granted('ROLE_GESTIONNAIRE')",
-        "security_message"=>"Vous n'avez pas access à cette Ressource",
-        ]]
+        "security_message" => "Vous n'avez pas access à cette Ressource",
+    ]]
 )]
 
 class Menu extends Produit
 {
 
-    #[Groups(["write","burger:read:simple"])]
+    #[Groups(["write", "burger:read:simple"])]
     private $catalogue;
 
     #[ORM\ManyToOne(targetEntity: Gestionnaire::class, inversedBy: 'menus')]
     private $gestionnaire;
 
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class,cascade:['persist'])]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\Count(min:1,minMessage: 'Le menu doit contenir au moins 1 burgers')]
-    #[Assert\Valid]   
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class, cascade: ['persist'])]
+    #[Groups(["write", "burger:read:all", "burger:read:simple"])]
+    #[Assert\Count(min: 1, minMessage: 'Le menu doit contenir au moins 1 burgers')]
+    #[Assert\Valid]
     private $menuBurgers;
 
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class,cascade:['persist'])]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class, cascade: ['persist'])]
+    #[Groups(["write", "burger:read:all", "burger:read:simple", "commande:write", "commande:read", "commande:read"])]
     #[Assert\Valid]
     private $menuTailles;
 
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade:['persist'])]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
-    #[Assert\Valid]   
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class, cascade: ['persist'])]
+    #[Groups(["write", "burger:read:all", "burger:read:simple"])]
+    #[Assert\Valid]
     private $menuPortionFrites;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuCommande::class)]
@@ -81,12 +82,12 @@ class Menu extends Produit
         $this->menuBurgers = new ArrayCollection();
         $this->menuTailles = new ArrayCollection();
         $this->menuPortionFrites = new ArrayCollection();
-        $this->type='menu';
+        $this->type = 'menu';
         $this->menuCommandes = new ArrayCollection();
     }
 
 
-   
+
     public function getCatalogue(): ?Catalogue
     {
         return $this->catalogue;
@@ -200,19 +201,32 @@ class Menu extends Produit
         return $this;
     }
 
-    #[Assert\Callback]
-    public function isMenuValid(ExecutionContext $context)
+    public function isMenuValid(ExecutionContext $context, Menu $menu)
     {
-        $portion=count($this->getMenuPortionFrites());
-        $talles=count($this->getMenuTailles());
+        $portion=count($menu->getMenuPortionFrites());
+        $talles=count($menu->getMenuTailles());
         if ($portion==0 && $talles==0) 
         {
             $context->buildViolation("Le menu doit avoir au moins un complement!!")
             ->addViolation();
         }
     }
-
-    /**
+    #[Assert\Callback]
+    public function test(ExecutionContext $context, Menu $menu)
+    {
+        $array = [];
+        foreach ($menu->getMenuBurgers() as  $burger) {
+            $array[] = $burger->getBurger();
+        }
+        //dd($array);
+        $notDoub = array_unique($array, SORT_REGULAR);
+        if (count($menu->getMenuBurgers()) != count($notDoub)) {
+            $context->buildViolation("Vous avez ajouter deux burgers identiques")
+            ->addViolation();
+        }
+    }
+    
+   /**
      * @return Collection<int, MenuCommande>
      */
     public function getMenuCommandes(): Collection
