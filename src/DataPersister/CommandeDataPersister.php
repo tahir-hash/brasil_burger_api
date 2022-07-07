@@ -27,9 +27,10 @@ class CommandeDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        dd($data);
+        //dd($data->getZone()->getPrix());
         $prixCmd=$this->montant->montantCommande($data);
         $data->setMontant($prixCmd);
+        dd($data->getMontant());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

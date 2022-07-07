@@ -24,6 +24,8 @@ class CommandePriceService
             $total += $prix;
         }
 
+        $total+=$data->getZone()->getPrix();
+
         return $total;
     }
 }

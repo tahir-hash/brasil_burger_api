@@ -201,10 +201,10 @@ class Menu extends Produit
         return $this;
     }
 
-    public function isMenuValid(ExecutionContext $context, Menu $menu)
+    public function isMenuValid(ExecutionContext $context)
     {
-        $portion=count($menu->getMenuPortionFrites());
-        $talles=count($menu->getMenuTailles());
+        $portion=count($this->getMenuPortionFrites());
+        $talles=count($this->getMenuTailles());
         if ($portion==0 && $talles==0) 
         {
             $context->buildViolation("Le menu doit avoir au moins un complement!!")
@@ -212,15 +212,14 @@ class Menu extends Produit
         }
     }
     #[Assert\Callback]
-    public function test(ExecutionContext $context, Menu $menu)
+    public function test(ExecutionContext $context)
     {
         $array = [];
-        foreach ($menu->getMenuBurgers() as  $burger) {
+        foreach ($this->getMenuBurgers() as  $burger) {
             $array[] = $burger->getBurger();
         }
-        //dd($array);
         $notDoub = array_unique($array, SORT_REGULAR);
-        if (count($menu->getMenuBurgers()) != count($notDoub)) {
+        if (count($this->getMenuBurgers()) != count($notDoub)) {
             $context->buildViolation("Vous avez ajouter deux burgers identiques")
             ->addViolation();
         }
