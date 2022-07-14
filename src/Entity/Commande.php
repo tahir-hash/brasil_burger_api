@@ -83,6 +83,9 @@ class Commande
     #[Assert\Valid]
     private $boissonTailleCommandes;
 
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenuBoissonTaille::class)]
+    private $commandeMenuBoissonTailles;
+
 
     public function __construct()
     {
@@ -91,6 +94,7 @@ class Commande
         $this->menuCommandes = new ArrayCollection();
         $this->portionFriteCommandes = new ArrayCollection();
         $this->boissonTailleCommandes = new ArrayCollection();
+        $this->commandeMenuBoissonTailles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -323,5 +327,35 @@ class Commande
             $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
             ->addViolation();
         }
+    }
+
+    /**
+     * @return Collection<int, CommandeMenuBoissonTaille>
+     */
+    public function getCommandeMenuBoissonTailles(): Collection
+    {
+        return $this->commandeMenuBoissonTailles;
+    }
+
+    public function addCommandeMenuBoissonTaille(CommandeMenuBoissonTaille $commandeMenuBoissonTaille): self
+    {
+        if (!$this->commandeMenuBoissonTailles->contains($commandeMenuBoissonTaille)) {
+            $this->commandeMenuBoissonTailles[] = $commandeMenuBoissonTaille;
+            $commandeMenuBoissonTaille->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeMenuBoissonTaille(CommandeMenuBoissonTaille $commandeMenuBoissonTaille): self
+    {
+        if ($this->commandeMenuBoissonTailles->removeElement($commandeMenuBoissonTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeMenuBoissonTaille->getCommande() === $this) {
+                $commandeMenuBoissonTaille->setCommande($this);
+            }
+        }
+
+        return $this;
     }
 }

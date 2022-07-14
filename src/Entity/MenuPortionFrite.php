@@ -21,7 +21,7 @@ class MenuPortionFrite
     #[ORM\Column(type: 'integer')]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
-    private $quantite;
+    private $quantite=1;
 
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'menuPortionFrites')]
     #[Groups(["write","burger:read:all","burger:read:simple"])]

@@ -5,6 +5,7 @@ namespace App\DataPersister;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\Commande;
+use App\Entity\CommandeMenuBoissonTaille;
 use App\Service\CommandePriceService;
 use App\Service\NumCmd;
 
@@ -35,7 +36,10 @@ class CommandeDataPersister implements DataPersisterInterface
         $num= $this->numcmd->NumCmdGenrator();
         $data->setNumCmd($num);
         $data->setMontant($prixCmd);
-        dd($data);
+        //dd($data);
+      /*   $test=new CommandeMenuBoissonTaille();
+        $test->setCommande($data); */
+       // dd($data->getMenuCommandes()[0]->getMenu()->getCommandeMenuBoissonTailles());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

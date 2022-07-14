@@ -64,17 +64,21 @@ class Menu extends Produit
     private $menuBurgers;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class, cascade: ['persist'])]
-    #[Groups(["write", "burger:read:all", "burger:read:simple", "commande:write", "commande:read"])]
+    #[Groups(["write", "burger:read:all", "burger:read:simple"])]
     #[Assert\Valid]
     private $menuTailles;
 
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade: ['persist'])]
     #[Groups(["write", "burger:read:all", "burger:read:simple"])]
     #[Assert\Valid]
     private $menuPortionFrites;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuCommande::class)]
     private $menuCommandes;
+
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: CommandeMenuBoissonTaille::class,cascade: ['persist'])]
+    #[Groups(["commande:read","commande:write"])]
+    private $commandeMenuBoissonTailles;
 
 
     public function __construct()
@@ -84,6 +88,7 @@ class Menu extends Produit
         $this->menuPortionFrites = new ArrayCollection();
         $this->type = 'menu';
         $this->menuCommandes = new ArrayCollection();
+        $this->commandeMenuBoissonTailles = new ArrayCollection();
     }
 
 
@@ -249,6 +254,36 @@ class Menu extends Produit
             // set the owning side to null (unless already changed)
             if ($menuCommande->getMenu() === $this) {
                 $menuCommande->setMenu(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeMenuBoissonTaille>
+     */
+    public function getCommandeMenuBoissonTailles(): Collection
+    {
+        return $this->commandeMenuBoissonTailles;
+    }
+
+    public function addCommandeMenuBoissonTaille(CommandeMenuBoissonTaille $commandeMenuBoissonTaille): self
+    {
+        if (!$this->commandeMenuBoissonTailles->contains($commandeMenuBoissonTaille)) {
+            $this->commandeMenuBoissonTailles[] = $commandeMenuBoissonTaille;
+            $commandeMenuBoissonTaille->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeMenuBoissonTaille(CommandeMenuBoissonTaille $commandeMenuBoissonTaille): self
+    {
+        if ($this->commandeMenuBoissonTailles->removeElement($commandeMenuBoissonTaille)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeMenuBoissonTaille->getMenu() === $this) {
+                $commandeMenuBoissonTaille->setMenu($this);
             }
         }
 

@@ -20,7 +20,7 @@ class BurgerCommande
     #[ORM\Column(type: 'integer')]
     #[Groups(["commande:read","commande:write"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
-    private $quantite;
+    private $quantite=1;
 
     #[ORM\Column(type: 'integer')]
     private $prix;
