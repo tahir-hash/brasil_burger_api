@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\ZoneController;
 use App\Repository\ZoneRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -19,9 +20,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             "security" => "is_granted('ALL', _api_resource_class)",
         ],
         "post"=>[
+            "method"=>"POST",
+            "path"=>"/api/zones",
+            "controller"=> ZoneController::class,
             'denormalization_context' => ['groups' => ['zone:write']],
             'normalization_context' => ['groups' => ['zone:read']],
-            "security_post_denormalize" => "is_granted('READ', object)",
+            "security_post_denormalize" => "is_granted('CREATE', object)",
+
         ]
         ], itemOperations:[
             "put"=>[
@@ -57,6 +62,8 @@ class Zone
     private $commandes;
 
     #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Quartier::class)]
+    #[Groups(["zone:read","zone:write"])]
+    #[Assert\Count(min: 1, minMessage: 'La zone doit contenir au moins 1 quartier')]
     private $quartiers;
 
     public function __construct()

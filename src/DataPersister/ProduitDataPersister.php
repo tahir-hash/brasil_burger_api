@@ -35,7 +35,7 @@ class ProduitDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        dd($data);
+        //dd($data);
        // dd($data->getMenuBurgers());
         $request = $this->requestStack->getCurrentRequest();
         if (!empty($request->files->all())) 

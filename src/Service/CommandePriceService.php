@@ -10,22 +10,25 @@ class CommandePriceService
         $total = 0;
         foreach ($data->getBurgerCommandes() as $burger) {
             $prix = $burger->getBurger()->getPrix() * $burger->getQuantite();
-            $burger->setPrix($burger->getBurger()->getPrix());
+            $burger->setPrix($prix);
             $total += $prix;
         }
         foreach ($data->getPortionFriteCommandes() as $frites) {
             $prix = $frites->getPortionFrite()->getPrix() * $frites->getQuantite();
-            $frites->setPrix($frites->getPortionFrite()->getPrix());
+            $frites->setPrix($prix);
             $total += $prix;
         }
         foreach ($data->getBoissonTailleCommandes() as $taille) {
             $prix = $taille->getBoissonTaille()->getTaille()->getPrix() * $taille->getQuantite();
-            $taille->setPrix($taille->getBoissonTaille()->getTaille()->getPrix());
+            $taille->setPrix($prix);
             $total += $prix;
         }
-
+        foreach ($data->getMenuCommandes() as $menu) {
+            $prix = $menu->getMenu()->getPrix() * $menu->getQuantite();
+            $menu->setPrix($prix);
+            $total += $prix;
+        }
         $total+=$data->getZone()->getPrix();
-
         return $total;
     }
 }

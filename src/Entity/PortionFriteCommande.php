@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PortionFriteCommandeRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PortionFriteCommandeRepository::class)]
 #[ApiResource]
@@ -18,7 +19,7 @@ class PortionFriteCommande
 
     #[ORM\Column(type: 'integer')]
     #[Groups(["commande:read","commande:write"])]
-
+    #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite;
 
     #[ORM\Column(type: 'integer')]

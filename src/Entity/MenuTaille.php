@@ -15,7 +15,9 @@ class MenuTaille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["commande:write"])]
     private $id;
+
     #[ORM\Column(type: 'integer')]
     #[Groups(["write","burger:read:all","burger:read:simple"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]

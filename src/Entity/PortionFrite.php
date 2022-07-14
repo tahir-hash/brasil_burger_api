@@ -61,7 +61,7 @@ class PortionFrite extends Produit
 
     public function __construct()
     {
-        parent::__construct();
+        //parent::__construct();
         $this->menuPortionFrites = new ArrayCollection();
         $this->type = 'portion';
         $this->portionFriteCommandes = new ArrayCollection();

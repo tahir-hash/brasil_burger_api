@@ -64,7 +64,7 @@ class Menu extends Produit
     private $menuBurgers;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class, cascade: ['persist'])]
-    #[Groups(["write", "burger:read:all", "burger:read:simple", "commande:write", "commande:read", "commande:read"])]
+    #[Groups(["write", "burger:read:all", "burger:read:simple", "commande:write", "commande:read"])]
     #[Assert\Valid]
     private $menuTailles;
 

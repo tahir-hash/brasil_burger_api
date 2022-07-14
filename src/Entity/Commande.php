@@ -8,6 +8,7 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
@@ -61,17 +62,22 @@ class Commande
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class,cascade:['persist'])]
     #[Groups(["commande:read","commande:write"])]
+    #[Assert\Valid]
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class,cascade:['persist'])]
+    #[Groups(["commande:read","commande:write"])]
+    #[Assert\Valid]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class,cascade:['persist'])]
     #[Groups(["commande:read","commande:write"])]
+    #[Assert\Valid]
     private $portionFriteCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class,cascade:['persist'])]
     #[Groups(["commande:read","commande:write"])]
+    #[Assert\Valid]
     private $boissonTailleCommandes;
 
 

@@ -28,6 +28,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             ]
         ]
 )]
+#[UniqueEntity(fields:'libelle',message: 'le libelle du quartier doit etre unique!')]
 class Quartier
 {
     #[ORM\Id]
@@ -36,7 +37,7 @@ class Quartier
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["quartier:write","quartier:read"])]
+    #[Groups(["zone:read","zone:write"])]
     #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
     private $libelle;
 

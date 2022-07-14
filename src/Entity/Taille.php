@@ -17,7 +17,7 @@ class Taille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:all","write"])]
+    #[Groups(["burger:read:all","write","commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
@@ -34,7 +34,7 @@ class Taille
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: MenuTaille::class)]
     private $menuTailles;
 
-    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: BoissonTaille::class)]
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: BoissonTaille::class,cascade:['persist'])]
     #[Groups(["commande:write",  "commande:read"])]
     private $boissonTailles;
 

@@ -6,17 +6,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
 use App\Entity\Commande;
 use App\Service\CommandePriceService;
+use App\Service\NumCmd;
 
 class CommandeDataPersister implements DataPersisterInterface
 {
     private EntityManagerInterface $entityManager;
     private CommandePriceService $montant;
+    private NumCmd $numcmd;
     public function __construct(
         EntityManagerInterface $entityManager,
-        CommandePriceService $montant
+        CommandePriceService $montant,
+        NumCmd $numcmd
     ) {
         $this->entityManager = $entityManager;
         $this->montant = $montant;
+        $this->numcmd = $numcmd;
     }
     public function supports($data): bool
     {
@@ -27,10 +31,13 @@ class CommandeDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        //dd($data->getZone()->getPrix());
+        //dd($data->getMenuCommandes()[0]->getQuantite());
         $prixCmd=$this->montant->montantCommande($data);
+        $num= $this->numcmd->NumCmdGenrator();
+        $data->setNumCmd($num);
         $data->setMontant($prixCmd);
-        dd($data->getMontant());
+       // dd($data->getNumCmd());
+      //dd($data);
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

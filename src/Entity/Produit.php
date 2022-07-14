@@ -55,9 +55,7 @@ class Produit
     #[ORM\Column(type: 'string', length: 255)]
     protected $type;
 
-    public function __construct()
-    {
-    }
+  
 
     public function getId(): ?int
     {

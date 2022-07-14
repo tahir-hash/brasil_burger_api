@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MenuCommandeRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuCommandeRepository::class)]
 #[ApiResource]
@@ -17,20 +18,20 @@ class MenuCommande
     private $id;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["commande:read","commande:write"])]
+    #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite;
 
     #[ORM\Column(type: 'integer')]
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuCommandes')]
+    #[Groups(["commande:read","commande:write"])]
     private $menu;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'menuCommandes')]
     private $commande;
 
-    public function __construct()
-    {
-    }
     public function getId(): ?int
     {
         return $this->id;
