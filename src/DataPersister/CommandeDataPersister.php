@@ -31,13 +31,11 @@ class CommandeDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
-        //dd($data->getMenuCommandes()[0]->getQuantite());
         $prixCmd=$this->montant->montantCommande($data);
         $num= $this->numcmd->NumCmdGenrator();
         $data->setNumCmd($num);
         $data->setMontant($prixCmd);
-       // dd($data->getNumCmd());
-      //dd($data);
+        dd($data);
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

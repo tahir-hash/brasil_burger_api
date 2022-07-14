@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator\ValidationCommande;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ApiResource(
@@ -17,7 +19,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "post" => [
             "method" => "POST",
             'denormalization_context'=>['groups' => ['commande:write']],
-            'normalization_context'=>['groups' => ['commande:read']]
+            'normalization_context'=>['groups' => ['commande:read']],
+            "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
     ]
 )]
@@ -310,6 +313,15 @@ class Commande
 
         return $this;
     }
-
-   
+    #[Assert\Callback]
+    public function valid (ExecutionContext $context)
+    {/* 
+        $burgerCommande=count($this->getBurgerCommandes());
+        $menuCommande=count($this->getMenuCommandes()); */
+        if (count($this->getBurgerCommandes())==0 && count($this->getMenuCommandes())==0) 
+        {
+            $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
+            ->addViolation();
+        }
+    }
 }

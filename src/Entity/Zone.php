@@ -7,6 +7,7 @@ use App\Controller\ZoneController;
 use App\Repository\ZoneRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,6 +60,7 @@ class Zone
     private $prix;
 
     #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Commande::class)]
+    #[ApiSubresource]
     private $commandes;
 
     #[ORM\OneToMany(mappedBy: 'zone', targetEntity: Quartier::class)]
