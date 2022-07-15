@@ -47,9 +47,9 @@ class Produit
 
 
     #[ORM\Column(type: 'blob',nullable: true)]
-   #[Groups(["burger:read:all","catalogue"])]
+    #[Groups(["burger:read:all","burger:read:simple","catalogue"])]
     protected $image;
-
+   // #[Groups(["write"])]
     protected $imageFile;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -115,11 +115,12 @@ class Produit
 
     public function getImage()
     {
-        if($this->image!==null)
+        if(is_resource($this->image))
         {
             return base64_encode(stream_get_contents($this->image));
         }
-        return null;
+        return base64_encode($this->image);
+
     }
 
     public function setImage($image): self

@@ -36,10 +36,7 @@ class CommandeDataPersister implements DataPersisterInterface
         $num= $this->numcmd->NumCmdGenrator();
         $data->setNumCmd($num);
         $data->setMontant($prixCmd);
-        //dd($data);
-      /*   $test=new CommandeMenuBoissonTaille();
-        $test->setCommande($data); */
-       // dd($data->getMenuCommandes()[0]->getMenu()->getCommandeMenuBoissonTailles());
+        dd($data->getMenuCommandes()[0]->getMenu()->getCommandeMenuBoissonTailles()[2]->getBoissonTaille());
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
