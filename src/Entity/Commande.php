@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Context\ExecutionContext;
     collectionOperations: [
         "post" => [
             "method" => "POST",
-            'denormalization_context'=>['groups' => ['commande:write']],
-            'normalization_context'=>['groups' => ['commande:read']],
+            'denormalization_context' => ['groups' => ['commande:write']],
+            'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
     ]
@@ -33,7 +33,7 @@ class Commande
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:read", "commande:write"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
@@ -41,12 +41,12 @@ class Commande
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-   // #[Groups(["commande:write","commande:write"])]
+    // #[Groups(["commande:write","commande:write"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
     //#[Groups(["commande:read","commande:write"])]
-    private $etat="EN COURS";
+    private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
     private $livraison;
@@ -60,26 +60,26 @@ class Commande
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:read", "commande:write"])]
     private $zone;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class,cascade:['persist'])]
-    #[Groups(["commande:read","commande:write"])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
+    #[Groups(["commande:read", "commande:write"])]
     #[Assert\Valid]
     private $burgerCommandes;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class,cascade:['persist'])]
-    #[Groups(["commande:read","commande:write"])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class, cascade: ['persist'])]
+    #[Groups(["commande:read", "commande:write"])]
     #[Assert\Valid]
     private $menuCommandes;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class,cascade:['persist'])]
-    #[Groups(["commande:read","commande:write"])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class, cascade: ['persist'])]
+    #[Groups(["commande:read", "commande:write"])]
     #[Assert\Valid]
     private $portionFriteCommandes;
 
-    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class,cascade:['persist'])]
-    #[Groups(["commande:read","commande:write"])]
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class, cascade: ['persist'])]
+    #[Groups(["commande:read", "commande:write"])]
     #[Assert\Valid]
     private $boissonTailleCommandes;
 
@@ -89,7 +89,7 @@ class Commande
 
     public function __construct()
     {
-        $this->dateCmd= new \DateTime();
+        $this->dateCmd = new \DateTime();
         $this->burgerCommandes = new ArrayCollection();
         $this->menuCommandes = new ArrayCollection();
         $this->portionFriteCommandes = new ArrayCollection();
@@ -318,14 +318,52 @@ class Commande
         return $this;
     }
     #[Assert\Callback]
-    public function valid (ExecutionContext $context)
-    {/* 
-        $burgerCommande=count($this->getBurgerCommandes());
-        $menuCommande=count($this->getMenuCommandes()); */
-        if (count($this->getBurgerCommandes())==0 && count($this->getMenuCommandes())==0) 
-        {
+    public function valid(ExecutionContext $context)
+    {
+        if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {
             $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
-            ->addViolation();
+                ->addViolation();
+        }
+    }
+
+    #[Assert\Callback]
+    public function menuBoisson(ExecutionContext $context)
+    {
+        foreach ($this->getMenuCommandes() as $menu) {
+            $count = count($menu->getMenu()->getMenuTailles());
+            $count1= count($menu->getMenu()->getCommandeMenuBoissonTailles());
+            if ($count != $count1) {
+                $context->buildViolation("menu bakhoul")
+                    ->addViolation();
+            }
+            foreach ($menu->getMenu()->getMenuTailles() as $menuTailles) {
+                $taille = $menuTailles->getTaille()->getId();
+                $qte = $menuTailles->getQuantite();
+                $cpt = 0;
+                foreach ($menu->getMenu()->getCommandeMenuBoissonTailles() as $commande) {
+                    $tailleBoisson = $commande->getBoissonTaille()->getTaille()->getId();
+                    $arr[] = $tailleBoisson;
+                    $cpt += $commande->getQuantite();
+                }
+                if (!in_array($taille, $arr)) {
+                    $context->buildViolation("menu taille")
+                        ->addViolation();
+                }
+                /* if($cpt<$qte)
+               {
+                    $context->buildViolation("menu quantite")
+                    ->addViolation();
+               } */
+            }
+            ///////////////////////////////////////
+            foreach ($menu->getMenu()->getCommandeMenuBoissonTailles() as $com) {
+                $stock = $com->getBoissonTaille()->getStock();
+                $quantite = $com->getQuantite()* $menu->getQuantite();
+                if ($quantite > $stock) {
+                    $context->buildViolation("rupture")
+                        ->addViolation();
+                }
+            }
         }
     }
 

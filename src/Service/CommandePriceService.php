@@ -20,12 +20,22 @@ class CommandePriceService
         }
         foreach ($data->getBoissonTailleCommandes() as $taille) {
             $prix = $taille->getBoissonTaille()->getTaille()->getPrix() * $taille->getQuantite();
+            $stock=$taille->getBoissonTaille()->getStock();
+            $quantite=$taille->getQuantite();
+            $stock=$stock-$quantite;
+            $taille->getBoissonTaille()->setStock($stock);
             $taille->setPrix($prix);
             $total += $prix;
         }
         foreach ($data->getMenuCommandes() as $menu) {
             $prix = $menu->getMenu()->getPrix() * $menu->getQuantite();
             $menu->setPrix($prix);
+            foreach ($menu->getMenu()->getCommandeMenuBoissonTailles() as $com) {
+                    $stock=$com->getBoissonTaille()->getStock();
+                    $quantite=$com->getQuantite();
+                    $stock=$stock-$quantite;
+                    $com->getBoissonTaille()->setStock($stock);
+            }
             $total += $prix;
         }
         $total+=$data->getZone()->getPrix();
