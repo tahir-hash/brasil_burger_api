@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Burger;
 use App\Entity\Boisson;
 use App\Entity\Commande;
+use App\Entity\Livraison;
 use App\Entity\Produit;
 use Doctrine\ORM\Events;
 use App\Entity\PortionFrite;
@@ -67,6 +68,10 @@ class UserSubscriber implements EventSubscriberInterface
         if ($args->getObject() instanceof Commande) {
             $args->getObject()->setClient($this->getUser());
         }
+
+        /* if ($args->getObject() instanceof Livraison) {
+            $args->getObject()->getCommandes
+        } */
 
     }
 

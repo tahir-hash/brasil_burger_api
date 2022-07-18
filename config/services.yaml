@@ -32,6 +32,7 @@ services:
     App\Service\UploadFile: ~
     App\Service\CommandePriceService: ~
     App\Service\NumCmdGenrator: ~
+    App\Service\MontantLivraison: ~
 
 
     

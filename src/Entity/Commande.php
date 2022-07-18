@@ -9,6 +9,7 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContext;
@@ -16,11 +17,22 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        "get" => [
+            'normalization_context' => ['groups' => ['commande:read']],
+            "security" => "is_granted('ALL', _api_resource_class)",
+        ],
         "post" => [
             "method" => "POST",
             'denormalization_context' => ['groups' => ['commande:write']],
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
+        ]
+    ],
+    itemOperations: [
+        "patch" => [
+            'denormalization_context' => ['groups' => ['commande:update']],
+            'normalization_context' => ['groups' => ['commande:read']],
+            "security_post_denormalize" => "is_granted('EDIT', object)"
         ]
     ]
 )]
@@ -29,7 +41,7 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read"])]
+    #[Groups(["commande:read", "livraison:write"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -45,7 +57,7 @@ class Commande
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    //#[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:update"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
@@ -318,7 +330,7 @@ class Commande
         return $this;
     }
     #[Assert\Callback]
-    public function valid(ExecutionContext $context)
+    public function valid(ExecutionContext $context, Request $request)
     {
         if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {
             $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
@@ -331,11 +343,7 @@ class Commande
     {
         foreach ($this->getMenuCommandes() as $menu) {
             $count = count($menu->getMenu()->getMenuTailles());
-            $count1= count($menu->getMenu()->getCommandeMenuBoissonTailles());
-            if ($count != $count1) {
-                $context->buildViolation("menu bakhoul")
-                    ->addViolation();
-            }
+
             foreach ($menu->getMenu()->getMenuTailles() as $menuTailles) {
                 $taille = $menuTailles->getTaille()->getId();
                 $qte = $menuTailles->getQuantite();
@@ -343,22 +351,31 @@ class Commande
                 foreach ($menu->getMenu()->getCommandeMenuBoissonTailles() as $commande) {
                     $tailleBoisson = $commande->getBoissonTaille()->getTaille()->getId();
                     $arr[] = $tailleBoisson;
-                    $cpt += $commande->getQuantite();
+                    $objTaille[] = $commande->getBoissonTaille()->getTaille();
+                    if ($taille == $tailleBoisson) {
+                        $cpt += $commande->getQuantite();
+                    }
+                }
+
+                $count1 = count(array_unique($objTaille, SORT_REGULAR));
+
+                if ($count != $count1) {
+                    $context->buildViolation("menu bakhoul")
+                        ->addViolation();
                 }
                 if (!in_array($taille, $arr)) {
                     $context->buildViolation("menu taille")
                         ->addViolation();
                 }
-                /* if($cpt<$qte)
-               {
+                if ($cpt != $qte) {
                     $context->buildViolation("menu quantite")
-                    ->addViolation();
-               } */
+                        ->addViolation();
+                }
             }
             ///////////////////////////////////////
             foreach ($menu->getMenu()->getCommandeMenuBoissonTailles() as $com) {
                 $stock = $com->getBoissonTaille()->getStock();
-                $quantite = $com->getQuantite()* $menu->getQuantite();
+                $quantite = $com->getQuantite() * $menu->getQuantite();
                 if ($quantite > $stock) {
                     $context->buildViolation("rupture")
                         ->addViolation();

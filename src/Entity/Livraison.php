@@ -7,23 +7,36 @@ use App\Repository\LivraisonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LivraisonRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "post" => [
+            "method" => "POST",
+            'denormalization_context' => ['groups' => ['livraison:write']],
+            'normalization_context' => ['groups' => ['livraison:read']],
+            "security_post_denormalize" => "is_granted('CREATE', object)",
+        ]
+    ]
+)]
 class Livraison
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["livraison:read"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["livraison:read", "livraison:write"])]
     private $montantTotal;
-
     #[ORM\ManyToOne(targetEntity: Livreur::class, inversedBy: 'livraisons')]
+    #[Groups(["livraison:read", "livraison:write"])]
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
+    #[Groups(["livraison:read", "livraison:write"])]
     private $commandes;
 
     public function __construct()
