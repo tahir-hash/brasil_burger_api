@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
 #[ORM\DiscriminatorMap(["user" => "User", "gestionnaire" => "Gestionnaire","client" => "Client","livreur" => "Livreur"])]
 #[ApiResource]
+#[ORM\Table('utilisateur')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

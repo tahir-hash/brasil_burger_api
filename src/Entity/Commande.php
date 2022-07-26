@@ -36,6 +36,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
         ]
     ]
 )]
+
 class Commande
 {
     #[ORM\Id]
@@ -329,16 +330,16 @@ class Commande
 
         return $this;
     }
-    #[Assert\Callback]
-    public function valid(ExecutionContext $context, Request $request)
+    /* #[Assert\Callback]
+    public function valid(ExecutionContext $context)
     {
         if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {
             $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
                 ->addViolation();
         }
-    }
+    } */
 
-    #[Assert\Callback]
+    /* #[Assert\Callback]
     public function menuBoisson(ExecutionContext $context)
     {
         foreach ($this->getMenuCommandes() as $menu) {
@@ -383,7 +384,7 @@ class Commande
             }
         }
     }
-
+ */
     /**
      * @return Collection<int, CommandeMenuBoissonTaille>
      */

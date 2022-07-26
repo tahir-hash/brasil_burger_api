@@ -33,6 +33,8 @@ services:
     App\Service\CommandePriceService: ~
     App\Service\NumCmdGenrator: ~
     App\Service\MontantLivraison: ~
+    App\Service\ValidationCommande: ~
+
 
 
     
