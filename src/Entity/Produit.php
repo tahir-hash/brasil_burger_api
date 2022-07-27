@@ -51,7 +51,7 @@ class Produit
     protected $image;
    // #[Groups(["write"])]
     protected $imageFile;
-
+    #[Groups(["catalogue"])]
     #[ORM\Column(type: 'string', length: 255)]
     protected $type;
 
