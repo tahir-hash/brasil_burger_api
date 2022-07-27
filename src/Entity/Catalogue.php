@@ -38,8 +38,8 @@ class Catalogue
 
     public function __construct(BurgerRepository $repo, MenuRepository $reposit)
     {
-        $this->burgers = $repo->findby(["etat"=>"DISPONIBLE"]);
-        $this->menus =$reposit->findby(["etat"=>"DISPONIBLE"]);
+        $this->burgers = ["burgers"=>$repo->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
+        $this->menus = ["menus"=>$reposit->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"])];
     }
 
     public function getId(): ?int
