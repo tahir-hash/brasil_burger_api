@@ -21,7 +21,6 @@ class MenuService
                 $prix=$taille->getTaille()->getPrix()*$taille->getQuantite();
                 $total+=$prix;
             }
-           // dd($total);
             $data->setPrix($total);  
     }
 }

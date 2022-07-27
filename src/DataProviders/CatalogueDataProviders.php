@@ -22,9 +22,9 @@ class CatalogueDataProviders implements ContextAwareCollectionDataProviderInterf
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        return [
-            $this->catalogue->getBurgers(),
-            $this->catalogue->getMenus()
-        ];
+        $catalogue=[];
+        $catalogue['burgers']= $this->catalogue->getBurgers();
+        $catalogue['menus']= $this->catalogue->getMenus();
+        return $catalogue;
     }
 }

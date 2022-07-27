@@ -18,7 +18,7 @@ class ValidationCommande
     {
         if($this->request->getCurrentRequest()->isMethod('POST'))
         {
-            dd('ok');
+            //dd('ok');
             /* if (count($this->commande->getBurgerCommandes()) == 0 && count($this->commande->getMenuCommandes()) == 0) {
                 $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
                     ->addViolation();

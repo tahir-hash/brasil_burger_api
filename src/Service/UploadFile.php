@@ -16,7 +16,7 @@ class UploadFile
     {
         $request = $this->request->getCurrentRequest();
         $file=$request->files->all()['imageFile'];
-        dd($file->getSize());
+        //dd($file->getSize());
         return stream_get_contents(fopen($file->getRealPath(), 'rb'));
     }
 }

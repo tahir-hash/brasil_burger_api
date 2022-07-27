@@ -59,10 +59,5 @@ class ProduitDataPersister implements DataPersisterInterface
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
-
-    public function arrayT(array $test)
-    {
-        
-    }
 }
 
