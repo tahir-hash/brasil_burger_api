@@ -55,10 +55,8 @@ class ProduitDataPersister implements DataPersisterInterface
     }
     public function remove($data)
     {
-        //$data->setEtat("ARCHIVER");
-        //$this->entityManager->persist($data);
-        $this->entityManager->remove($data);
-
+        $data->setEtat("ARCHIVER");
+        $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
 }
