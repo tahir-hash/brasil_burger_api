@@ -15,7 +15,7 @@ class MenuTaille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:write"])]
+    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]

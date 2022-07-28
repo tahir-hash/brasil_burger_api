@@ -17,15 +17,15 @@ class Taille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:all","write","commande:write"])]
+    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["burger:read:all","complement"])]
+    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write","complement"])]
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:all","commande:read",])]
+    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write","commande:read",])]
     private $libelle;
 
 

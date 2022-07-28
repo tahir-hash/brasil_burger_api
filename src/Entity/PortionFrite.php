@@ -42,8 +42,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class PortionFrite extends Produit
 {
-    
-
     #[Groups(["write","burger:read:simple"])]
     private $complement;
 
