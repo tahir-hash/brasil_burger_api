@@ -19,12 +19,12 @@ class MenuPortionFrite
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Groups(["details:read","write","burger:read:all","burger:read:simple"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite=1;
 
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'menuPortionFrites')]
-    #[Groups(["write","burger:read:all","burger:read:simple"])]
+    #[Groups(["details:read","write","burger:read:all","burger:read:simple"])]
     #[Assert\NotBlank(message: 'Choisir au moins une portionFrites')]
     private $portionFrite;
 

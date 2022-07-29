@@ -57,6 +57,8 @@ class PortionFrite extends Produit
     #[ORM\OneToMany(mappedBy: 'portionFrite', targetEntity: PortionFriteCommande::class)]
     private $portionFriteCommandes;
 
+    private ?DetailsProduits $detailsProduits = null;
+
     public function __construct()
     {
         //parent::__construct();
@@ -132,6 +134,18 @@ class PortionFrite extends Produit
                 $portionFriteCommande->setPortionFrite(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDetailsProduits(): ?DetailsProduits
+    {
+        return $this->detailsProduits;
+    }
+
+    public function setDetailsProduits(?DetailsProduits $detailsProduits): self
+    {
+        $this->detailsProduits = $detailsProduits;
 
         return $this;
     }
