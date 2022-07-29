@@ -19,7 +19,7 @@ class DetailsProduits
     public ?int $id=8 ;
     #[Groups(["details:read"])]
     public ?Menu $menu ;
-
+    #[Groups(["details:read"])]
     public ?Burger $burger ;
     #[Groups(["details:read"])]
     public array $boissons;
