@@ -21,11 +21,11 @@ class Taille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write", "commande:write","complement"])]
+    #[Groups(["details:read","write", "commande:write","complement"])]
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write","commande:read",])]
+    #[Groups(["details:read","write","burger:read:all","burger:read:simple", "commande:write","commande:read",])]
     private $libelle;
 
 
@@ -35,7 +35,7 @@ class Taille
     private $menuTailles;
 
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: BoissonTaille::class,cascade:['persist'])]
-    #[Groups(["commande:write",  "commande:read"])]
+    #[Groups(["details:read","commande:write",  "commande:read"])]
     private $boissonTailles;
 
     public function __construct()

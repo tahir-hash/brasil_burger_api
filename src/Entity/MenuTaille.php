@@ -19,12 +19,12 @@ class MenuTaille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write","burger:read:all","burger:read:simple", "commande:write"])]
+    #[Groups(["details:read","write","burger:read:all","burger:read:simple", "commande:write"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite=1;
 
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'menuTailles')]
-    #[Groups(["write","burger:read:all","burger:read:simple","commande:write",  "commande:read"])]
+    #[Groups(["details:read","write","burger:read:all","burger:read:simple","commande:write",  "commande:read"])]
     #[Assert\NotBlank(message: 'Choisir au moins une Taille')]
     private $taille;
 

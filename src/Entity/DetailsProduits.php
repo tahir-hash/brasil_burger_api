@@ -21,9 +21,9 @@ class DetailsProduits
     public ?Menu $menu ;
 
     public ?Burger $burger ;
-
+    #[Groups(["details:read"])]
     public array $boissons;
-
+    #[Groups(["details:read"])]
     public array $frites;
 
     public function __construct()

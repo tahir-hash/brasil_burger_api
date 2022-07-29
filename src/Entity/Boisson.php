@@ -53,7 +53,6 @@ class Boisson extends Produit
     #[Groups(["write","burger:read:all"])]
     private $boissonTailles;
 
-    private ?DetailsProduits $detailsProduits = null;
 
     public function __construct()
     {
@@ -105,15 +104,5 @@ class Boisson extends Produit
         return $this;
     }
 
-    public function getDetailsProduits(): ?DetailsProduits
-    {
-        return $this->detailsProduits;
-    }
-
-    public function setDetailsProduits(?DetailsProduits $detailsProduits): self
-    {
-        $this->detailsProduits = $detailsProduits;
-
-        return $this;
-    }
+   
 }

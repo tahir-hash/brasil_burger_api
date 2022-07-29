@@ -21,7 +21,7 @@ class BoissonTaille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["write","burger:read:all"])]
+    #[Groups(["details:read","write","burger:read:all"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $stock;
 
@@ -30,7 +30,7 @@ class BoissonTaille
     private $taille;
 
     #[ORM\ManyToOne(targetEntity: Boisson::class, inversedBy: 'boissonTailles')]
-    //#[Groups(["burger:read:all","burger:read:simple"])]
+    #[Groups(["details:read",])]
     private $boisson;
 
     #[ORM\OneToMany(mappedBy: 'boissonTaille', targetEntity: BoissonTailleCommande::class)]

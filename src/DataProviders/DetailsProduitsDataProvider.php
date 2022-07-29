@@ -9,11 +9,12 @@ use App\Entity\Burger;
 use App\Repository\BoissonRepository;
 use App\Repository\PortionFriteRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\TailleRepository;
 
 final class DetailsProduitsDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
    
-    public function __construct(BoissonRepository $repo, PortionFriteRepository $reposit,ProduitRepository $prod)
+    public function __construct(TailleRepository $repo, PortionFriteRepository $reposit,ProduitRepository $prod)
     {
         $this->repo = $repo;
         $this->reposit = $reposit;
@@ -28,7 +29,7 @@ final class DetailsProduitsDataProvider implements ItemDataProviderInterface, Re
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?DetailsProduits
     {
         $produits= $this->prod->findOneBy(['id'=>$id]);
-        $boissons = $this->repo->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"]);
+        $boissons = $this->repo->findAll();
         $frites = $this->reposit->findby(["etat"=>"DISPONIBLE"],['id'=>"desc"]);
         $details= new DetailsProduits();
         $details->boissons = $boissons;
