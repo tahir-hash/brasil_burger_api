@@ -30,7 +30,7 @@ class BoissonTaille
     private $taille;
 
     #[ORM\ManyToOne(targetEntity: Boisson::class, inversedBy: 'boissonTailles')]
-    //#[Groups(["commande:read","commande:write"])]
+    //#[Groups(["burger:read:all","burger:read:simple"])]
     private $boisson;
 
     #[ORM\OneToMany(mappedBy: 'boissonTaille', targetEntity: BoissonTailleCommande::class)]
