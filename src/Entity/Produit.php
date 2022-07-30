@@ -47,7 +47,7 @@ class Produit
 
 
     #[ORM\Column(type: 'blob',nullable: true)]
-    #[Groups(["catalogue"])]
+    #[Groups(["details:read","catalogue"])]
     protected $image;
    // #[Groups(["write"])]
     protected $imageFile;
