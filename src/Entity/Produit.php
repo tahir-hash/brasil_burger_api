@@ -27,7 +27,7 @@ class Produit
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["details:read","burger:read:simple","commande:read","burger:read:all","write","catalogue","complement"])]
+    #[Groups(["taille","details:read","burger:read:simple","commande:read","burger:read:all","write","catalogue","complement"])]
     #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
@@ -47,7 +47,7 @@ class Produit
 
 
     #[ORM\Column(type: 'blob',nullable: true)]
-    #[Groups(["details:read","catalogue"])]
+    #[Groups(['burger:read:simple',"details:read","taille","catalogue"])]
     protected $image;
    // #[Groups(["write"])]
     protected $imageFile;

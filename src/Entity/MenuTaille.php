@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuTailleRepository::class)]
-#[ApiResource]
+#[ApiResource()]
 class MenuTaille
 {
     #[ORM\Id]

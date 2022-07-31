@@ -11,7 +11,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TailleRepository::class)]
-#[ApiResource]
+#[ApiResource(collectionOperations:[
+    "get"=>[
+        'normalization_context' => ['groups' => ['taille']]
+    ]
+])]
 class Taille
 {
     #[ORM\Id]
@@ -35,7 +39,7 @@ class Taille
     private $menuTailles;
 
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: BoissonTaille::class,cascade:['persist'])]
-    #[Groups(["details:read","commande:write",  "commande:read"])]
+    #[Groups(["details:read","commande:write",  "commande:read","taille"])]
     private $boissonTailles;
 
     public function __construct()

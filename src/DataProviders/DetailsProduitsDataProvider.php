@@ -6,7 +6,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\DetailsProduits;
 use App\Entity\Menu;
 use App\Entity\Burger;
-use App\Repository\BoissonRepository;
+
 use App\Repository\PortionFriteRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\TailleRepository;
@@ -14,7 +14,9 @@ use App\Repository\TailleRepository;
 final class DetailsProduitsDataProvider implements ItemDataProviderInterface, RestrictedDataProviderInterface
 {
    
-    public function __construct(TailleRepository $repo, PortionFriteRepository $reposit,ProduitRepository $prod)
+    public function __construct(TailleRepository $repo, 
+    PortionFriteRepository $reposit,
+    ProduitRepository $prod)
     {
         $this->repo = $repo;
         $this->reposit = $reposit;
