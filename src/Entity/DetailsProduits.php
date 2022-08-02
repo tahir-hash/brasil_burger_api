@@ -15,8 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class DetailsProduits
 {
-    
-    public ?int $id=8 ;
+    public ?int $id=1 ;
     #[Groups(["details:read"])]
     public ?Menu $menu ;
     #[Groups(["details:read"])]
@@ -25,6 +24,7 @@ class DetailsProduits
     public array $boissons;
     #[Groups(["details:read"])]
     public array $frites;
+
 
     public function __construct()
     {
