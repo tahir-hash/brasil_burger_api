@@ -20,7 +20,7 @@ class CommandeMenuBoissonTaille
     #[Groups(["commande:read","commande:write"])]
     private $quantite=1;
 
-    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeMenuBoissonTailles')]
+    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeMenuBoissonTailles',cascade: ['persist'])]
     private $commande;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'commandeMenuBoissonTailles')]
@@ -29,6 +29,7 @@ class CommandeMenuBoissonTaille
     #[ORM\ManyToOne(targetEntity: BoissonTaille::class, inversedBy: 'commandeMenuBoissonTailles')]
     #[Groups(["commande:read","commande:write"])]
     private $boissonTaille;
+
 
     public function getId(): ?int
     {
@@ -47,12 +48,12 @@ class CommandeMenuBoissonTaille
         return $this;
     }
 
-    public function getCommande(): ?Commande
+    public function getCommande(): Commande
     {
         return $this->commande;
     }
 
-    public function setCommande(?Commande $commande): self
+    public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
 

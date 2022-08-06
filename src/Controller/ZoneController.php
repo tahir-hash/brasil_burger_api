@@ -4,13 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Zone;
 use App\Entity\Quartier;
-use App\Repository\QuartierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Json;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ZoneController extends AbstractController

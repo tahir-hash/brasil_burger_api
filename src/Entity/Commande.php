@@ -27,13 +27,6 @@ use Symfony\Component\Validator\Context\ExecutionContext;
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
-    ],
-    itemOperations: [
-        "patch" => [
-            'denormalization_context' => ['groups' => ['commande:update']],
-            'normalization_context' => ['groups' => ['commande:read']],
-            "security_post_denormalize" => "is_granted('EDIT', object)"
-        ]
     ]
 )]
 
@@ -330,16 +323,16 @@ class Commande
 
         return $this;
     }
-    /* #[Assert\Callback]
+    #[Assert\Callback]
     public function valid(ExecutionContext $context)
     {
         if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {
             $context->buildViolation("Une commande doit avoir au moins un burger ou un menu")
                 ->addViolation();
         }
-    } */
+    }
 
-    /* #[Assert\Callback]
+    #[Assert\Callback]
     public function menuBoisson(ExecutionContext $context)
     {
         foreach ($this->getMenuCommandes() as $menu) {
@@ -384,7 +377,7 @@ class Commande
             }
         }
     }
- */
+
     /**
      * @return Collection<int, CommandeMenuBoissonTaille>
      */

@@ -40,7 +40,6 @@ class CommandeDataPersister implements DataPersisterInterface
         $num= $this->numcmd->NumCmdGenrator();
         $data->setNumCmd($num);
         $data->setMontant($prixCmd);
-       // $this->valid->valid($data);
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

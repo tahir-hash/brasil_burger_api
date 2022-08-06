@@ -33,19 +33,7 @@ class UserSubscriber implements EventSubscriberInterface
             //CheckPassportEvent::class => 'onCheckPassport'
         ];
     }
-   /*  public function onCheckPassport(CheckPassportEvent $event)
-    {
-        $passport = $event->getPassport();
-        $user = $passport->getUser();
-        if (!$user instanceof User) {
-            throw new \Exception('Unexpected user type');
-        }
-        if (!$user->isIsEnabled()) {
-            throw new CustomUserMessageAuthenticationException(
-                'Please verify your account before logging in.'
-            );
-        }
-    } */
+    
     
     private function getUser()
     {
@@ -74,6 +62,18 @@ class UserSubscriber implements EventSubscriberInterface
         } */
 
     }
-
+    /* public function onCheckPassport(CheckPassportEvent $event)
+    {
+        $passport = $event->getPassport();
+        $user = $passport->getUser();
+        if (!$user instanceof User) {
+            throw new \Exception('Unexpected user type');
+        }
+        if (!$user->isIsEnabled()) {
+            throw new CustomUserMessageAuthenticationException(
+                'Please verify your account before logging in.'
+            );
+        }
+    } */
     
 }
