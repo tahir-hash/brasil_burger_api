@@ -24,9 +24,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist}
             #- { name: doctrine.event_listener, event: onCheckPassport}
-    App\EventSubscriber\CommandeSubscriber:
-        tags:
-            - { name: doctrine.event_listener, event: postPersist}
     App\DataProviders\DetailsProduitsDataProvider: ~
 
     # add more service definitions when explicit configuration is needed
