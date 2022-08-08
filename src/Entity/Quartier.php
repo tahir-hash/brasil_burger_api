@@ -13,16 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     collectionOperations: [
         "get"=>[
             'normalization_context' => ['groups'=>['quartier:read']],
-        ],
-        "post"=>[
-            'denormalization_context' => ['groups' => ['quartier:write']],
-            'normalization_context' => ['groups' => ['quartier:read']],
         ]
         ], itemOperations:[
-            "put"=>[
-                'denormalization_context' => ['groups' => ['quartier:write']],
-            'normalization_context' => ['groups' => ['quartier:read']],
-            ],
             "get" => [
             "security" => "is_granted('Zone_read', object)",
             ]
@@ -34,17 +26,17 @@ class Quartier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["zone:read"])]
+    #[Groups(["zone:read",'quartier:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["zone:read","zone:write"])]
+    #[Groups(["zone:read","zone:write",'quartier:read'])]
     #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
     private $libelle;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'quartiers')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["quartier:write"])]
+    #[Groups(["quartier:write",'quartier:read'])]
     #[Assert\NotBlank(message: 'Le zone ne doit pas etre vide')]
     private $zone;
 
