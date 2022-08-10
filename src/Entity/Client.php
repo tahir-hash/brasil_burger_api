@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ApiResource(
+    attributes: ["pagination_enabled" => false],
     collectionOperations:[
     "get"=>[
         'method' => 'get',
@@ -34,7 +35,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "get"=>[
         'normalization_context' => ['groups' => ['user:read:item']],
         ]
-    ])]
+        ])]
 class Client extends User
 {
     #[ORM\Column(type: 'string', length: 255)]

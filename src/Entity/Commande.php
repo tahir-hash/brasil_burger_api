@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ApiResource(
+    attributes: ["pagination_enabled" => false],
     collectionOperations: [
         "get" => [
             'normalization_context' => ['groups' => ['commande:read']],
