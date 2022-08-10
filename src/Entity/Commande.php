@@ -323,7 +323,7 @@ class Commande
 
         return $this;
     }
-    #[Assert\Callback]
+   // #[Assert\Callback]
     public function valid(ExecutionContext $context)
     {
         if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {
@@ -332,7 +332,7 @@ class Commande
         }
     }
 
-    #[Assert\Callback]
+    //#[Assert\Callback]
     public function menuBoisson(ExecutionContext $context)
     {
         foreach ($this->getMenuCommandes() as $menu) {
