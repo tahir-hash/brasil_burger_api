@@ -35,23 +35,23 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read", "livraison:write"])]
+    #[Groups(["commande:read", "livraison:write","user:read:item"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups(["commande:read", "commande:write","user:read:item"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    //#[Groups(["commande:read","commande:write"])]
+    #[Groups(["user:read:item"])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-    // #[Groups(["commande:write","commande:write"])]
+     #[Groups(["user:read:item"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["commande:update"])]
+    #[Groups(["commande:update","user:read:item"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]

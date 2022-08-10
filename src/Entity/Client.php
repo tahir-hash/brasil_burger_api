@@ -13,7 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[ApiResource(collectionOperations:[
+#[ApiResource(
+    collectionOperations:[
     "get"=>[
         'method' => 'get',
         'path'=>'/confirmer-mon-compte/{token}',
@@ -29,7 +30,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "controller"=> MailerController::class,
        // "deserialize"=>false
     ]
-])]
+    ], itemOperations:[
+        "get"=>[
+        'normalization_context' => ['groups' => ['user:read:item']],
+        ]
+    ])]
 class Client extends User
 {
     #[ORM\Column(type: 'string', length: 255)]
@@ -42,6 +47,7 @@ class Client extends User
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Commande::class)]
     #[ApiSubresource()]
+    #[Groups(["user:read:item"])]
     private $commandes;
 
     public function __construct()
