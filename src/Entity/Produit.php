@@ -28,7 +28,7 @@ class Produit
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(["taille",'menu:complement:read',"details:read","burger:read:simple","commande:read","burger:read:all","write","catalogue","complement"])]
-    #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
+   // #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
 
@@ -39,7 +39,7 @@ class Produit
 
     #[ORM\Column(type: 'text')]
     #[Groups(["details:read","burger:read:all","write"])]
-    #[Assert\NotBlank(message: 'La description ne doit pas etre vide')]
+   // #[Assert\NotBlank(message: 'La description ne doit pas etre vide')]
     protected $description;
 
     #[ORM\Column(type: 'string', length: 255)]

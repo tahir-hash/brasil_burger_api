@@ -59,7 +59,7 @@ class Menu extends Produit
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class, cascade: ['persist'])]
     #[Groups(["details:read","write", "burger:read:all", "burger:read:simple"])]
-    #[Assert\Count(min: 1, minMessage: 'Le menu doit contenir au moins 1 burgers')]
+   // #[Assert\Count(min: 1, minMessage: 'Le menu doit contenir au moins 1 burgers')]
    // #[Assert\Valid]
     private $menuBurgers;
 
