@@ -35,7 +35,7 @@ class Produit
     #[ORM\Column(type: 'integer')]
     #[Groups(["details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
    // #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
-    protected $prix=0;
+    protected $prix;
 
     #[ORM\Column(type: 'text')]
     #[Groups(["details:read","burger:read:all","write"])]
