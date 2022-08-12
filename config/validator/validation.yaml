@@ -1,3 +1,0 @@
-App\Entity\Menu:
-    constraints:
-        - Callback: isMenuValid
