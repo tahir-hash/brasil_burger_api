@@ -59,18 +59,18 @@ class Menu extends Produit
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuBurger::class, cascade: ['persist'])]
     #[Groups(["details:read","write", "burger:read:all", "burger:read:simple"])]
-   // #[Assert\Count(min: 1, minMessage: 'Le menu doit contenir au moins 1 burgers')]
-   // #[Assert\Valid]
+    #[Assert\Count(min: 1, minMessage: 'Le menu doit contenir au moins 1 burgers')]
+    #[Assert\Valid]
     private $menuBurgers;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuTaille::class, cascade: ['persist'])]
     #[Groups(["details:read","write", "burger:read:all", "burger:read:simple"])]
-   // #[Assert\Valid]
+    #[Assert\Valid]
     private $menuTailles;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuPortionFrite::class,cascade: ['persist'])]
     #[Groups(["details:read","write", "burger:read:all", "burger:read:simple"])]
-  //  #[Assert\Valid]
+    #[Assert\Valid]
     private $menuPortionFrites;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuCommande::class)]
@@ -216,7 +216,7 @@ class Menu extends Produit
             ->addViolation();
         }
     }
-   // #[Assert\Callback]
+   #[Assert\Callback]
     public function test(ExecutionContext $context)
     {
         $array = [];
