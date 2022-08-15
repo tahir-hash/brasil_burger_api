@@ -15,11 +15,11 @@ class BoissonTailleCommande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite;
 
@@ -27,7 +27,7 @@ class BoissonTailleCommande
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: BoissonTaille::class, inversedBy: 'boissonTailleCommandes')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $boissonTaille;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'boissonTailleCommandes')]

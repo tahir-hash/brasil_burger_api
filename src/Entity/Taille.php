@@ -29,7 +29,7 @@ class Taille
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['menu:complement:read',"details:read","write","burger:read:all","burger:read:simple", "commande:write","commande:read",])]
+    #[Groups(['menu:complement:read',"details:read","write","burger:read:all","burger:read:simple", "commande:write",])]
     private $libelle;
 
 
@@ -39,7 +39,7 @@ class Taille
     private $menuTailles;
     #[ApiResource()]
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: BoissonTaille::class,cascade:['persist'])]
-    #[Groups(["details:read","commande:write",  "commande:read","taille"])]
+    #[Groups(["details:read","commande:write",  "taille"])]
     private $boissonTailles;
 
     public function __construct()

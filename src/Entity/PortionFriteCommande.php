@@ -18,7 +18,7 @@ class PortionFriteCommande
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite=1;
 
@@ -26,7 +26,7 @@ class PortionFriteCommande
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: PortionFrite::class, inversedBy: 'portionFriteCommandes')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $portionFrite;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'portionFriteCommandes')]

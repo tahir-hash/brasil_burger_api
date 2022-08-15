@@ -18,7 +18,7 @@ class MenuCommande
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite=1;
 
@@ -26,7 +26,7 @@ class MenuCommande
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuCommandes')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $menu;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'menuCommandes')]

@@ -23,11 +23,11 @@ class Produit
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["details:read",'menu:complement:read',"burger:read:simple","commande:write","commande:read","burger:read:all","write","catalogue","complement"])]
+    #[Groups(["details:read",'menu:complement:read',"burger:read:simple","commande:write","burger:read:all","write","catalogue","complement"])]
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["taille",'menu:complement:read',"details:read","burger:read:simple","commande:read","burger:read:all","write","catalogue","complement"])]
+    #[Groups(["taille",'menu:complement:read',"details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
    // #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 

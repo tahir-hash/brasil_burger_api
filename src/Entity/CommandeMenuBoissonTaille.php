@@ -17,7 +17,7 @@ class CommandeMenuBoissonTaille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $quantite=1;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeMenuBoissonTailles',cascade: ['persist'])]
@@ -27,7 +27,7 @@ class CommandeMenuBoissonTaille
     private $menu;
 
     #[ORM\ManyToOne(targetEntity: BoissonTaille::class, inversedBy: 'commandeMenuBoissonTailles')]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $boissonTaille;
 
 

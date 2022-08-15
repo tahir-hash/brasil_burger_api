@@ -82,12 +82,11 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
     {
-       // dd($event->getUser()->getId());
+       /*  if (!$user instanceof UserInterface) {
+            return;
+        } */
         $data = $event->getData();
         $user = $event->getUser();
-        if (!$user instanceof UserInterface) {
-            return;
-        }
         $data['id'] = $user->getId();
         $event->setData($data);
     }

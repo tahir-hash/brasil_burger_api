@@ -77,7 +77,7 @@ class Menu extends Produit
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: CommandeMenuBoissonTaille::class,cascade: ['persist'])]
-    #[Groups(["commande:read","commande:write"])]
+    #[Groups(["commande:write"])]
     private $commandeMenuBoissonTailles;
 
 

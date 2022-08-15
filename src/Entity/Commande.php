@@ -36,23 +36,23 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:read", "livraison:write","user:read:item"])]
+    #[Groups(['commande:read',"livraison:write","user:read:item"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["commande:read", "commande:write","user:read:item"])]
+    #[Groups(['commande:read',"commande:write","user:read:item"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(["user:read:item"])]
+    #[Groups(['commande:read',"user:read:item"])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-     #[Groups(["user:read:item"])]
+     #[Groups(['commande:read',"user:read:item"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["commande:update","user:read:item"])]
+    #[Groups(['commande:read',"commande:update","user:read:item"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
@@ -67,26 +67,26 @@ class Commande
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes')]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups(["commande:write"])]
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups([ "commande:write"])]
     #[Assert\Valid]
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups([ "commande:write"])]
     #[Assert\Valid]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups([ "commande:write"])]
     #[Assert\Valid]
     private $portionFriteCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:read", "commande:write"])]
+    #[Groups([ "commande:write"])]
     #[Assert\Valid]
     private $boissonTailleCommandes;
 
