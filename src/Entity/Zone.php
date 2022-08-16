@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     collectionOperations: [
         "get"=>[
             'normalization_context' => ['groups'=>['zone:read']],
-            "security" => "is_granted('ALL', _api_resource_class)",
         ],
         "post"=>[
             "method"=>"POST",

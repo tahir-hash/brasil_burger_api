@@ -39,6 +39,7 @@ security:
         - { path: ^/api/catalogues, roles: PUBLIC_ACCESS }
         - { path: ^/api/complements, roles: PUBLIC_ACCESS }
         - { path: ^/api/burgers, roles: PUBLIC_ACCESS }
+        - { path: ^/api/zones, roles: PUBLIC_ACCESS }
         - { path: ^/api/tailles, roles: PUBLIC_ACCESS }
         - { path: ^/api/portion_frites, roles: PUBLIC_ACCESS }
         - { path: ^/api/details_produits, roles: PUBLIC_ACCESS }
