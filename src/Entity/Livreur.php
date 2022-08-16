@@ -13,7 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: LivreurRepository::class)]
 #[ApiResource(collectionOperations: [
-    "get",
+    "get"=>[
+        'normalization_context' => ['groups' => ['livreur:read']],
+    ],
     "post" => [
         "method" => "post",
         'normalization_context' => ['groups' => ['livreur:read']],
