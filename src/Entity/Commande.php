@@ -28,6 +28,13 @@ use Symfony\Component\Validator\Context\ExecutionContext;
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
+    ],
+    itemOperations: [
+        "put" => [
+            "method" => "put",
+            'normalization_context' => ['groups' => ['commande:read']],
+            'denormalization_context' => ['groups' => ['commande:update']],
+        ]
     ]
 )]
 
@@ -36,23 +43,23 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read',"livraison:write","user:read:item"])]
+    #[Groups(['commande:read', "livraison:write", "user:read:item"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['commande:read',"commande:write","user:read:item"])]
+    #[Groups(['commande:read', "commande:write", "user:read:item"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['commande:read',"user:read:item"])]
+    #[Groups(['commande:read', "user:read:item"])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-     #[Groups(['commande:read',"user:read:item"])]
+    #[Groups(['commande:read', "user:read:item"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['commande:read',"commande:update","user:read:item"])]
+    #[Groups(['commande:read', "commande:update", "user:read:item"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
@@ -71,22 +78,22 @@ class Commande
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
-    #[Groups([ "commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\Valid]
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class, cascade: ['persist'])]
-    #[Groups([ "commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\Valid]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class, cascade: ['persist'])]
-    #[Groups([ "commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\Valid]
     private $portionFriteCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class, cascade: ['persist'])]
-    #[Groups([ "commande:write"])]
+    #[Groups(["commande:write"])]
     #[Assert\Valid]
     private $boissonTailleCommandes;
 
@@ -324,7 +331,7 @@ class Commande
 
         return $this;
     }
-   // #[Assert\Callback]
+    // #[Assert\Callback]
     public function valid(ExecutionContext $context)
     {
         if (count($this->getBurgerCommandes()) == 0 && count($this->getMenuCommandes()) == 0) {

@@ -29,7 +29,9 @@ class LivraisonDataPersister implements DataPersisterInterface
     {
         $montantLiv=$this->montant->montantLiv($data);
         $data->setMontantTotal($montantLiv);
-       // dd($data);
+        foreach ($data->getCommandes() as $commandes) {
+           $commandes->setEtat("EN LIVRAISON");
+        }
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
