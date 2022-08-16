@@ -28,13 +28,6 @@ use Symfony\Component\Validator\Context\ExecutionContext;
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
-    ],
-    itemOperations: [
-        "put" => [
-            "method" => "put",
-            'normalization_context' => ['groups' => ['commande:read']],
-            'denormalization_context' => ['groups' => ['commande:update']],
-        ]
     ]
 )]
 
