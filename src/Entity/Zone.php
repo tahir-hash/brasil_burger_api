@@ -46,12 +46,12 @@ class Zone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["zone:read","quartier:read","commande:write"])]
+    #[Groups(["zone:read","quartier:read",'commande:read',"commande:write"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
-    #[Groups(["zone:read","zone:write",'quartier:read'])]
+    #[Groups(["zone:read","zone:write",'quartier:read','commande:read'])]
     private $libelle;
 
     #[ORM\Column(type: 'integer')]

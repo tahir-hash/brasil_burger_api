@@ -88,6 +88,7 @@ class UserSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $user = $event->getUser();
         $data['id'] = $user->getId();
+
         $event->setData($data);
     }
     
