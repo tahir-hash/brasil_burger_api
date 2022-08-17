@@ -44,7 +44,7 @@ class Commande
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['commande:read', "user:read:item"])]
+    #[Groups(['commande:read', "user:read:item","livraison:read:details"])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
@@ -67,7 +67,7 @@ class Commande
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes')]
-    #[Groups(['commande:read', "commande:write"])]
+    #[Groups(['commande:read', "commande:write","livraison:read:details"])]
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
@@ -96,7 +96,6 @@ class Commande
 
     public function __construct()
     {
-        $this->dateCmd = new \DateTime();
         $this->burgerCommandes = new ArrayCollection();
         $this->menuCommandes = new ArrayCollection();
         $this->portionFriteCommandes = new ArrayCollection();

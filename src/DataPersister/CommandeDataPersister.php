@@ -8,6 +8,7 @@ use App\Service\CommandePriceService;
 use App\Service\ValidationCommande;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\Core\DataPersister\DataPersisterInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class CommandeDataPersister implements DataPersisterInterface
 {
@@ -19,7 +20,7 @@ class CommandeDataPersister implements DataPersisterInterface
         EntityManagerInterface $entityManager,
         CommandePriceService $montant,
         NumCmd $numcmd,
-        ValidationCommande $valid
+        ValidationCommande $valid,
     ) {
         $this->entityManager = $entityManager;
         $this->montant = $montant;
