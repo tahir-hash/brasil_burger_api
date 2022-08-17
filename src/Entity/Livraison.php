@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
         ],itemOperations: [
         'get'=>[
+            'normalization_context' => ['groups' => ['livraison:read:details']],
         ],
         'put'=>[
             'swagger_definition_name' => 'put'
@@ -44,7 +45,7 @@ class Livraison
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
-    #[Groups(["livraison:write","livraison:read"])]
+    #[Groups(["livraison:write","livraison:read:details"])]
     private $commandes;
 
     #[ORM\Column(length: 255)]
