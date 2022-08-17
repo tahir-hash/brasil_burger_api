@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: LivraisonRepository::class)]
 #[ApiResource(
     collectionOperations: [
+        "get"=>[],
         "post" => [
             "method" => "POST",
             'denormalization_context' => ['groups' => ['livraison:write']],
@@ -38,6 +39,9 @@ class Livraison
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
     #[Groups(["livraison:read", "livraison:write"])]
     private $commandes;
+
+    #[ORM\Column(length: 255)]
+    private ?string $etat = "EN COURS";
 
     public function __construct()
     {
@@ -99,6 +103,18 @@ class Livraison
                 $commande->setLivraison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

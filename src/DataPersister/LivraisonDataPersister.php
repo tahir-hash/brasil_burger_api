@@ -32,6 +32,7 @@ class LivraisonDataPersister implements DataPersisterInterface
         foreach ($data->getCommandes() as $commandes) {
            $commandes->setEtat("EN LIVRAISON");
         }
+        $data->getLivreur()->setEtat("INDISPONIBLE");
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

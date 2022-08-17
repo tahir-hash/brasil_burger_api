@@ -45,6 +45,7 @@ security:
         - { path: ^/api/details_produits, roles: PUBLIC_ACCESS }
         - { path: ^/api/menu_complements, roles: PUBLIC_ACCESS }
         - { path: ^/api/livreurs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/livraison, roles: PUBLIC_ACCESS }
         - { path: ^/api/boissons, roles: PUBLIC_ACCESS }
         - { path: ^/api/menus, roles: PUBLIC_ACCESS }
         - { path: ^/api/quartiers, roles: PUBLIC_ACCESS }
