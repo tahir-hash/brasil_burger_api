@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: LivreurRepository::class)]
-#[ApiResource(collectionOperations: [
+#[ApiResource(
+    collectionOperations: [
     "get"=>[
         'normalization_context' => ['groups' => ['livreur:read']],
     ],
@@ -33,7 +34,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Livreur extends User
 {
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["livreur:read"])]
+    #[Groups(["livreur:read",'livraison:read'])]
     private $matriculeMoto;
 
     #[ORM\Column(type: 'integer')]

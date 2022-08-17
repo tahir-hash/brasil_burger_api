@@ -12,36 +12,45 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: LivraisonRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        "get"=>[],
+        "get"=>[
+            'normalization_context' => ['groups' => ['livraison:read']],
+        ],
         "post" => [
             "method" => "POST",
             'denormalization_context' => ['groups' => ['livraison:write']],
             'normalization_context' => ['groups' => ['livraison:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
-    ]
+        ],itemOperations: [
+        'get'=>[
+            'normalization_context' => ['groups' => ['livraison:read:details']],
+        ],
+        'put'=>[
+            'swagger_definition_name' => 'put'
+        ]],
 )]
 class Livraison
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read"])]
+    #[Groups(["livraison:read",'livraison:read:details'])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read", "livraison:write"])]
+    #[Groups(["livraison:read", "livraison:write",'livraison:read:details'])]
     private $montantTotal;
     #[ORM\ManyToOne(targetEntity: Livreur::class, inversedBy: 'livraisons')]
     #[Groups(["livraison:read", "livraison:write"])]
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
-    #[Groups(["livraison:read", "livraison:write"])]
+    #[Groups(["livraison:write",'livraison:read:details'])]
     private $commandes;
 
     #[ORM\Column(length: 255)]
-    private ?string $etat = "EN COURS";
+    #[Groups(["livraison:read"])]
+    private string $etat = "EN COURS";
 
     public function __construct()
     {
