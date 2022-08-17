@@ -23,7 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
         ],itemOperations: [
         'get'=>[
-            'normalization_context' => ['groups' => ['livraison:read:details']],
         ],
         'put'=>[
             'swagger_definition_name' => 'put'
@@ -34,18 +33,18 @@ class Livraison
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read",'livraison:read:details'])]
+    #[Groups(["livraison:read"])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read", "livraison:write",'livraison:read:details'])]
+    #[Groups(["livraison:read", "livraison:write"])]
     private $montantTotal;
     #[ORM\ManyToOne(targetEntity: Livreur::class, inversedBy: 'livraisons')]
     #[Groups(["livraison:read", "livraison:write"])]
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
-    #[Groups(["livraison:write",'livraison:read:details'])]
+    #[Groups(["livraison:write","livraison:read"])]
     private $commandes;
 
     #[ORM\Column(length: 255)]
