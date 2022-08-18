@@ -36,7 +36,7 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read', "livraison:write", "user:read:item","livraison:read:details"])]
+    #[Groups(['commande:read', "livraison:write","user:read:item","livraison:read:details"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]

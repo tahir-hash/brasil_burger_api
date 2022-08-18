@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'normalization_context' => ['groups' => ['livraison:read:details']],
         ],
         'put'=>[
-            'swagger_definition_name' => 'put'
+            'denormalization_context' => ['groups' => ['livraison:update']],
         ]],
 )]
 class Livraison
@@ -38,18 +38,18 @@ class Livraison
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read", "livraison:write"])]
+    #[Groups(["livraison:read", "livraison:write",])]
     private $montantTotal;
     #[ORM\ManyToOne(targetEntity: Livreur::class, inversedBy: 'livraisons')]
-    #[Groups(["livraison:read", "livraison:write"])]
+    #[Groups(["livraison:read", "livraison:write",])]
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
-    #[Groups(["livraison:write","livraison:read:details"])]
+    #[Groups(["livraison:write","livraison:read:details",])]
     private $commandes;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["livraison:read"])]
+    #[Groups(["livraison:read",'livraison:update'])]
     private string $etat = "EN COURS";
 
     public function __construct()
