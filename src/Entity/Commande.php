@@ -44,7 +44,7 @@ class Commande
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['commande:read', "user:read:item","livraison:read:details"])]
+    #[Groups(['commande:read', "user:read:item","livraison:read:details",'commande:write'])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
@@ -96,6 +96,7 @@ class Commande
 
     public function __construct()
     {
+        $this->dateCmd = new \DateTime();
         $this->burgerCommandes = new ArrayCollection();
         $this->menuCommandes = new ArrayCollection();
         $this->portionFriteCommandes = new ArrayCollection();
