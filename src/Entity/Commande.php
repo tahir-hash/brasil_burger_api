@@ -94,6 +94,7 @@ class Commande
     private $commandeMenuBoissonTailles;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["commande:write"])]
     private ?string $telClient = null;
 
 
