@@ -93,6 +93,9 @@ class Commande
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: CommandeMenuBoissonTaille::class)]
     private $commandeMenuBoissonTailles;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telClient = null;
+
 
     public function __construct()
     {
@@ -405,6 +408,18 @@ class Commande
                 $commandeMenuBoissonTaille->setCommande($this);
             }
         }
+
+        return $this;
+    }
+
+    public function getTelClient(): ?string
+    {
+        return $this->telClient;
+    }
+
+    public function setTelClient(?string $telClient): self
+    {
+        $this->telClient = $telClient;
 
         return $this;
     }
