@@ -36,6 +36,7 @@ class CommandeDataPersister implements DataPersisterInterface
      */
     public function persist($data)
     {
+        //dd($data->getZone());
         $prixCmd=$this->montant->montantCommande($data);
         $num= $this->numcmd->NumCmdGenrator();
         $data->setNumCmd($num);

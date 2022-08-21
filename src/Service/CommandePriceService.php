@@ -38,7 +38,10 @@ class CommandePriceService
             }
             $total += $prix;
         }
-        $total+=$data->getZone()->getPrix();
+        if($data->getZone()!=null){
+            $total+=$data->getZone()->getPrix();
+        }
+       // $total+=$data->getZone()->getPrix();
         return $total;
     }
 }
