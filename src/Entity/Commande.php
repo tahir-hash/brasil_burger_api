@@ -67,6 +67,7 @@ class Commande
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['commande:read', "commande:write","livraison:read:details"])]
     private $zone;
 
