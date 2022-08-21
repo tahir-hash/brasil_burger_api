@@ -38,7 +38,7 @@ class Produit
     protected $prix;
 
     #[ORM\Column(type: 'text')]
-    #[Groups(["details:read","burger:read:all","write"])]
+    #[Groups(["details:read","burger:read:all","write",'catalogue'])]
     #[Assert\NotBlank(message: 'La description ne doit pas etre vide')]
     protected $description;
 
