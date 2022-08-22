@@ -27,7 +27,7 @@ class LivraisonDataPersister implements DataPersisterInterface
      */
     public function persist($data, array $context=[])
     {
-        if($context['collection_operation_name']=='post'){
+        if(array_key_exists('collection_operation_name',$context) && $context['collection_operation_name']=='post'){
             $montantLiv=$this->montant->montantLiv($data);
             $data->setMontantTotal($montantLiv);
             foreach ($data->getCommandes() as $commandes) {
@@ -35,7 +35,7 @@ class LivraisonDataPersister implements DataPersisterInterface
             }
         $data->getLivreur()->setEtat("INDISPONIBLE");
         }
-        if($context['item_operation_name']=='put'){   
+        if(array_key_exists('item_operation_name',$context) && $context['item_operation_name']=='put'){   
           foreach($context['previous_data']->getCommandes() as $cmd){
             $cmd->setEtat("VALIDEE");
           }
