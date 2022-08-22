@@ -27,21 +27,21 @@ class LivraisonDataPersister implements DataPersisterInterface
      */
     public function persist($data, array $context=[])
     {
-        if($context['item_operation_name']!='put'){
-            dd('ok');
+        if($context['collection_operation_name']=='post'){
             $montantLiv=$this->montant->montantLiv($data);
             $data->setMontantTotal($montantLiv);
             foreach ($data->getCommandes() as $commandes) {
                $commandes->setEtat("EN LIVRAISON");
             }
+        $data->getLivreur()->setEtat("INDISPONIBLE");
         }
-        else{   
+        if($context['item_operation_name']=='put'){   
           foreach($context['previous_data']->getCommandes() as $cmd){
             $cmd->setEtat("VALIDEE");
           }
+         $data->getLivreur()->setEtat("DISPONIBLE");
         }
        
-        $data->getLivreur()->setEtat("INDISPONIBLE");
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
