@@ -27,13 +27,13 @@ class Produit
     protected $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["taille",'menu:complement:read',"details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
+    #[Groups(["taille",'commande:read:details','menu:complement:read',"details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
    // #[Assert\NotBlank(message: 'le nom ne doit pas etre vide')]
     protected $nom;
 
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
+    #[Groups(['commande:read:details',"details:read","burger:read:simple","burger:read:all","write","catalogue","complement"])]
     #[Assert\NotBlank(message: 'Le prix ne doit pas etre vide')]
     protected $prix;
 

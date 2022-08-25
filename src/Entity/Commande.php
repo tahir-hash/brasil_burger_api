@@ -27,7 +27,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
-    ]
+        ],itemOperations: [
+                'get' => [
+                    'normalization_context' => ['groups' => ['commande:read:details']],
+                ]
+            ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['zone' => 'exact'])]
 
@@ -36,11 +40,11 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read', "livraison:write","user:read:item","livraison:read:details"])]
+    #[Groups(['commande:read','commande:read:details', "livraison:write","user:read:item","livraison:read:details"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['commande:read', "commande:write", "user:read:item","livraison:read:details"])]
+    #[Groups(['commande:read',  "commande:write", "user:read:item","livraison:read:details"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
@@ -48,7 +52,7 @@ class Commande
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read', "user:read:item","livraison:read:details"])]
+    #[Groups(['commande:read', 'commande:read:details',"user:read:item","livraison:read:details"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -72,22 +76,22 @@ class Commande
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:write"])]
+    #[Groups(["commande:write",'commande:read:details'])]
     #[Assert\Valid]
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:write"])]
+    #[Groups(['commande:read:details',"commande:write"])]
     #[Assert\Valid]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:write"])]
+    #[Groups(['commande:read:details',"commande:write"])]
     #[Assert\Valid]
     private $portionFriteCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:write"])]
+    #[Groups(['commande:read:details',"commande:write"])]
     #[Assert\Valid]
     private $boissonTailleCommandes;
 

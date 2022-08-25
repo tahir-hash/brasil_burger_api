@@ -15,18 +15,20 @@ class MenuCommande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['commande:read:details'])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["commande:write"])]
+    #[Groups(["commande:write",'commande:read:details'])]
     #[Assert\GreaterThan(0,message: 'La quantite doit etre superieur à zero')]
     private $quantite=1;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['commande:read:details'])]
     private $prix;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuCommandes')]
-    #[Groups(["commande:write"])]
+    #[Groups(["commande:write",'commande:read:details'])]
     private $menu;
 
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'menuCommandes')]
