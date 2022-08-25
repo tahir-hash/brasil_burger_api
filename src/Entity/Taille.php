@@ -25,11 +25,11 @@ class Taille
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["details:read","write", "commande:write","complement"])]
+    #[Groups(["details:read","write", "commande:write","complement",'commande:read:details'])]
     private $prix;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['menu:complement:read',"details:read","write","burger:read:all","burger:read:simple", "commande:write",])]
+    #[Groups(['commande:read:details','menu:complement:read',"details:read","write","burger:read:all","burger:read:simple", "commande:write",])]
     private $libelle;
 
 

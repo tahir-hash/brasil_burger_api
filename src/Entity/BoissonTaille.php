@@ -26,12 +26,12 @@ class BoissonTaille
     private $stock;
 
     #[ORM\ManyToOne(targetEntity: Taille::class, inversedBy: 'boissonTailles',cascade:['persist'])]
-    #[Groups(["write","burger:read:all"])]
+    #[Groups(["write","burger:read:all",'commande:read:details'])]
     private $taille;
     
     #[ApiResource()]
     #[ORM\ManyToOne(targetEntity: Boisson::class, inversedBy: 'boissonTailles')]
-    #[Groups(["details:read","taille"])]
+    #[Groups(["details:read","taille",'commande:read:details'])]
     private $boisson;
 
     #[ORM\OneToMany(mappedBy: 'boissonTaille', targetEntity: BoissonTailleCommande::class)]
