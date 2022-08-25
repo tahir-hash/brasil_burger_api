@@ -47,7 +47,7 @@ class Produit
 
 
     #[ORM\Column(type: 'blob',nullable: true)]
-    #[Groups(['burger:read:simple',"details:read","taille","catalogue","complement"])]
+    #[Groups(['commande:read:details','burger:read:simple',"details:read","taille","catalogue","complement"])]
     protected $image;
    // #[Groups(["write"])]
     protected $imageFile;
