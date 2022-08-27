@@ -2,18 +2,20 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\LivraisonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LivraisonRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: LivraisonRepository::class)]
 #[ApiResource(
     collectionOperations: [
         "get"=>[
-            'normalization_context' => ['groups' => ['livraison:read']],
+            'normalization_context' => ['groups' => ['livraison:read:livreur']],
         ],
         "post" => [
             "method" => "POST",
@@ -29,27 +31,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'denormalization_context' => ['groups' => ['livraison:update']],
         ]],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['etat' => 'exact', 'livreur' => 'exact'])]
+
 class Livraison
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read"])]
+    #[Groups(['livraison:read:livreur'])]
     private $id;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livraison:read", "livraison:write",])]
+    #[Groups(["livraison:write",'livraison:read:livreur'])]
     private $montantTotal;
     #[ORM\ManyToOne(targetEntity: Livreur::class, inversedBy: 'livraisons')]
-    #[Groups(["livraison:read", "livraison:write",])]
+    #[Groups(["livraison:write"])]
     private $livreur;
 
     #[ORM\OneToMany(mappedBy: 'livraison', targetEntity: Commande::class)]
-    #[Groups(["livraison:write","livraison:read:details",])]
+    #[Groups(["livraison:write","livraison:read:details",'livraison:read:livreur'])]
     private $commandes;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["livraison:read",'livraison:update'])]
+    #[Groups(['livraison:update',"livreur:read:details",'livraison:read:livreur'])]
     private string $etat = "EN COURS";
 
     public function __construct()

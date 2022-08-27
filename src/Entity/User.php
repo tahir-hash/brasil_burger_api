@@ -38,11 +38,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     protected $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:all","user:read:simple","livreur:read",'livraison:read'])]
+    #[Groups(["burger:read:all","user:read:simple","livreur:read",'livraison:read:livreur'])]
     protected $nom;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["burger:read:all","user:read:simple","livreur:read",'livraison:read'])]
+    #[Groups(["burger:read:all","user:read:simple","livreur:read",'livraison:read:livreur'])]
     protected $prenom;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

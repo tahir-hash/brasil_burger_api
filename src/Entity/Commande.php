@@ -40,11 +40,11 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read','commande:read:details', "livraison:write","user:read:item","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur','commande:read','commande:read:details', "livraison:write","user:read:item","livraison:read:details",])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['commande:read',  "commande:write", "user:read:item","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur','commande:read',  "commande:write", "user:read:item","livraison:read:details"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
@@ -52,11 +52,11 @@ class Commande
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['commande:read', 'commande:read:details',"user:read:item","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur','commande:read', 'commande:read:details',"user:read:item","livraison:read:details"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['commande:read', "commande:update", "user:read:item","livraison:read:details"])]
+    #[Groups(['foobar:livreur','commande:read', "commande:update", "user:read:item","livraison:read:details"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
@@ -68,11 +68,12 @@ class Commande
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['livraison:read:livreur'])]
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes',cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['commande:read', "commande:write","livraison:read:details"])]
+    #[Groups(['commande:read', "commande:write","livraison:read:details",'livraison:read:livreur'])]
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
@@ -99,7 +100,7 @@ class Commande
     private $commandeMenuBoissonTailles;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["commande:write"])]
+    #[Groups(["commande:write",'livraison:read:livreur'])]
     private ?string $telClient = null;
 
 

@@ -45,16 +45,16 @@ class Zone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["zone:read","quartier:read",'commande:read',"commande:write","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur',"zone:read","quartier:read",'commande:read',"commande:write","livraison:read:details"])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'le libelle ne doit pas etre vide')]
-    #[Groups(["zone:read","zone:write",'quartier:read','commande:read',"livraison:read:details"])]
+    #[Groups(["zone:read","zone:write",'quartier:read','commande:read','livraison:read:livreur'])]
     private $libelle;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["zone:read","zone:write",'quartier:read'])]
+    #[Groups(['livraison:read:livreur',"zone:read","zone:write",'quartier:read'])]
     #[Assert\NotBlank(message: 'le prix ne doit pas etre vide')]
     private $prix;
 

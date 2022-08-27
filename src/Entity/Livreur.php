@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\LivreurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ApiResource(
     collectionOperations: [
     "get"=>[
-        'normalization_context' => ['groups' => ['livreur:read']],
     ],
     "post" => [
         "method" => "post",
@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ]
 ], itemOperations: [
     "get" => [
-        'normalization_context' => ['groups' => ['livreur:read']],
+        //'normalization_context' => ['groups' => ['livreur:read:details']],
     ],
     "put"=>[
         "method" => 'put',
@@ -34,11 +34,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Livreur extends User
 {
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["livreur:read",'livraison:read'])]
+    #[Groups(["livreur:read"])]
     private $matriculeMoto;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["livreur:read"])]
     private $telephone;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -46,6 +45,8 @@ class Livreur extends User
     private $etat = "DISPONIBLE";
 
     #[ORM\OneToMany(mappedBy: 'livreur', targetEntity: Livraison::class)]
+    #[ApiSubresource()]
+    #[Groups(["livreur:read:details"])]
     private $livraisons;
 
     public function __construct()
