@@ -68,7 +68,7 @@ class Commande
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livraison:read:livreur'])]
+    #[Groups(['livraison:read:livreur','commande:read:details'])]
     private $client;
 
     #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes',cascade: ['persist'])]
