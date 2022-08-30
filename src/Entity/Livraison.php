@@ -32,7 +32,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
         ]],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['etat' => 'exact', 'livreur' => 'exact'])]
-
 class Livraison
 {
     #[ORM\Id]
