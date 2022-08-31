@@ -27,11 +27,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
             'normalization_context' => ['groups' => ['commande:read']],
             "security_post_denormalize" => "is_granted('CREATE', object)",
         ]
-        ],itemOperations: [
-                'get' => [
-                    'normalization_context' => ['groups' => ['commande:read:details']],
-                ]
-            ]
+    ],
+    itemOperations: [
+        'get' => [
+            'normalization_context' => ['groups' => ['commande:read:details']],
+        ],
+        'PUT' => [
+            'denormalization_context' => ['groups' => ['commande:update']],
+
+        ]
+    ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['zone' => 'exact'])]
 
@@ -40,23 +45,23 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['livraison:read:livreur','commande:read','commande:read:details', "livraison:write","user:read:item","livraison:read:details",])]
+    #[Groups(['livraison:read:livreur', 'commande:read', 'commande:read:details', "livraison:write", "user:read:item", "livraison:read:details",])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['livraison:read:livreur','commande:read',  "commande:write", "user:read:item","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur', 'commande:read',  "commande:write", "user:read:item", "livraison:read:details"])]
     private $numCmd;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['commande:read', "user:read:item","livraison:read:details",'commande:write'])]
+    #[Groups(['commande:read', "user:read:item", "livraison:read:details", 'commande:write'])]
     private $dateCmd;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['livraison:read:livreur','commande:read', 'commande:read:details',"user:read:item","livraison:read:details"])]
+    #[Groups(['livraison:read:livreur', 'commande:read', 'commande:read:details', "user:read:item", "livraison:read:details"])]
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['foobar:livreur','commande:read', "commande:update", "user:read:item","livraison:read:details"])]
+    #[Groups(['foobar:livreur', 'commande:read', 'commande:update', "user:read:item", "livraison:read:details"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
@@ -68,31 +73,31 @@ class Commande
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livraison:read:livreur','commande:read:details'])]
+    #[Groups(['livraison:read:livreur', 'commande:read:details'])]
     private $client;
 
-    #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes',cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class, inversedBy: 'commandes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['commande:read', "commande:write","livraison:read:details",'livraison:read:livreur'])]
+    #[Groups(['commande:read', "commande:write", "livraison:read:details", 'livraison:read:livreur'])]
     private $zone;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BurgerCommande::class, cascade: ['persist'])]
-    #[Groups(["commande:write",'commande:read:details'])]
+    #[Groups(["commande:write", 'commande:read:details'])]
     #[Assert\Valid]
     private $burgerCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: MenuCommande::class, cascade: ['persist'])]
-    #[Groups(['commande:read:details',"commande:write"])]
+    #[Groups(['commande:read:details', "commande:write"])]
     #[Assert\Valid]
     private $menuCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: PortionFriteCommande::class, cascade: ['persist'])]
-    #[Groups(['commande:read:details',"commande:write"])]
+    #[Groups(['commande:read:details', "commande:write"])]
     #[Assert\Valid]
     private $portionFriteCommandes;
 
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: BoissonTailleCommande::class, cascade: ['persist'])]
-    #[Groups(['commande:read:details',"commande:write"])]
+    #[Groups(['commande:read:details', "commande:write"])]
     #[Assert\Valid]
     private $boissonTailleCommandes;
 
@@ -100,7 +105,7 @@ class Commande
     private $commandeMenuBoissonTailles;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(["commande:write",'livraison:read:livreur'])]
+    #[Groups(["commande:write", 'livraison:read:livreur'])]
     private ?string $telClient = null;
 
 
