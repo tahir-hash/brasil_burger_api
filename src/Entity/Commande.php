@@ -61,7 +61,7 @@ class Commande
     private $montant;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['foobar:livreur', 'commande:read', 'commande:update', "user:read:item", "livraison:read:details"])]
+    #[Groups(['foobar:livreur', 'commande:read','livraison:read:livreur', 'commande:update', "user:read:item", "livraison:read:details"])]
     private $etat = "EN COURS";
 
     #[ORM\ManyToOne(targetEntity: Livraison::class, inversedBy: 'commandes')]
